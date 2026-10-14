@@ -57,3 +57,5 @@ Link público (sin PIN, solo consulta): `https://…/index.html?v=publico` — p
 
 ## Actualizar los datos embebidos
 Los datos de demo son una foto de las respuestas a 14/10/2026. Con la API conectada no hacen falta. Si quieres refrescarlos sin API: regenera `index.html` con `build.py` (carpeta `src/`).
+
+
