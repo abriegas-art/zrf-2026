@@ -1,0 +1,13 @@
+{
+  "name": "Zubiazpi Rural Fest 2026",
+  "short_name": "ZRF 2026",
+  "start_url": "./index.html?v=crew",
+  "display": "standalone",
+  "background_color": "#f4efdc",
+  "theme_color": "#f4efdc",
+  "lang": "es",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

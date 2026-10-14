@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f4efdc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#2f323e" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ZRF 2026">
+<title>Zubiazpi Rural Fest 2026 · Control</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4efdc; --bg2:#fbf8ee; --ink:#141414; --ink2:#5b5a52; --line:rgba(20,20,20,.14);
+  --yellow:#f2d81c; --orange:#f59a1a; --blue:#4d6fc0; --purple:#b67bc2; --red:#e24b4b; --green:#3aa83a;
+  --ok:#2e8b3a; --warn:#c7770a; --bad:#d13a3a; --accent:var(--blue); --card:rgba(255,255,255,.55);
+  --tabbar:rgba(244,239,220,.92); --shadow:0 1px 0 rgba(0,0,0,.08);
+}
+[data-theme="dark"]{
+  --bg:#2f323e; --bg2:#383b48; --ink:#dcdde6; --ink2:#a4a7b5; --line:rgba(220,221,230,.16);
+  --yellow:#e8d34a; --orange:#f0a548; --blue:#7f98d8; --purple:#9a8cbf; --red:#ef6b6b; --green:#4cc06a;
+  --ok:#4cc06a; --warn:#f0a548; --bad:#ef6b6b; --accent:var(--purple); --card:rgba(0,0,0,.18);
+  --tabbar:rgba(47,50,62,.94); --shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.35;-webkit-text-size-adjust:100%}
+body{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+a{color:inherit}
+h1,h2,h3{font-weight:300;letter-spacing:-.04em;margin:0;text-transform:uppercase;line-height:.95}
+h1{font-size:2.6rem}
+h2{font-size:1.9rem;margin:18px 0 10px}
+h3{font-size:1.25rem;margin:14px 0 8px;text-transform:none;letter-spacing:-.02em;font-weight:400}
+.muted{color:var(--ink2)}
+.small{font-size:.8rem}
+.mono{font-variant-numeric:tabular-nums}
+header.top{padding:calc(12px + env(safe-area-inset-top)) 16px 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+header.top .title{display:flex;flex-direction:column}
+header.top .sub{font-style:italic;font-weight:300;font-size:1rem;margin-top:4px;color:var(--ink2)}
+.badge-year{display:inline-block;border:1.5px solid var(--ink);border-radius:50%;padding:2px 10px;font-size:1rem;font-weight:300;transform:rotate(-6deg);margin-left:6px}
+.logo{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 1px 0 rgba(0,0,0,.15))}
+main{padding:0 16px}
+section.view{display:none}
+section.view.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;box-shadow:var(--shadow)}
+.card.tight{padding:10px 12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+.stat .l{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);font-weight:600}
+.stat .v{font-size:1.6rem;font-weight:300;letter-spacing:-.03em;margin-top:2px}
+.stat .v.ok{color:var(--ok)} .stat .v.warn{color:var(--warn)} .stat .v.bad{color:var(--bad)}
+.stat .s{font-size:.75rem;color:var(--ink2)}
+.bar{height:10px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:8px}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:6px;transition:width .4s}
+.bar>i.ok{background:var(--green)} .bar>i.warn{background:var(--orange)} .bar>i.bad{background:var(--red)}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:none}
+.row .grow{flex:1;min-width:0}
+.row .name{font-weight:600;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .meta{font-size:.78rem;color:var(--ink2);margin-top:2px;display:flex;flex-wrap:wrap;gap:4px 8px}
+.chip{display:inline-block;font-size:.7rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);white-space:nowrap}
+.chip.txarri{background:var(--purple);color:#fff;border-color:transparent}
+.chip.txakur{background:var(--orange);color:#fff;border-color:transparent}
+.chip.grupo{background:var(--blue);color:#fff;border-color:transparent}
+.chip.duda{background:var(--yellow);color:#222;border-color:transparent}
+.chip.ok{background:var(--green);color:#fff;border-color:transparent}
+.chip.bad{background:var(--red);color:#fff;border-color:transparent}
+.chip.warn{background:var(--orange);color:#fff;border-color:transparent}
+.btn{font:inherit;font-weight:600;border:1.5px solid var(--ink);background:transparent;color:var(--ink);padding:9px 14px;border-radius:999px;cursor:pointer;font-size:.85rem;letter-spacing:.02em;white-space:nowrap}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn.sm{padding:5px 10px;font-size:.75rem}
+.btn.ghost{border-color:var(--line);color:var(--ink2)}
+.btn.danger{border-color:var(--red);color:var(--red)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.45}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;font-size:16px}
+input[type=checkbox]{width:auto}
+textarea{min-height:70px}
+label.f{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;color:var(--ink2);margin:10px 0 4px}
+.search{display:flex;gap:8px;align-items:center;margin:8px 0}
+.search input{flex:1}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters .chip{padding:6px 12px;font-size:.75rem;cursor:pointer;border-color:var(--line)}
+.filters .chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;background:var(--tabbar);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom));z-index:20}
+nav.tabs button{background:none;border:none;color:var(--ink2);font:inherit;font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 8px;cursor:pointer;min-width:58px}
+nav.tabs button img{width:26px;height:26px;object-fit:contain;opacity:.55}
+nav.tabs button.on{color:var(--ink)} nav.tabs button.on img{opacity:1}
+nav.tabs button .ico{width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;opacity:.6}
+nav.tabs button.on .ico{opacity:1}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;z-index:50}
+.sheet.open{display:flex}
+.sheet .panel{background:var(--bg);width:100%;max-height:92vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom))}
+.sheet .panel h2{margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);padding:6px 4px;border-bottom:1px solid var(--ink)}
+td{padding:7px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.tot td{font-weight:600;border-top:1.5px solid var(--ink)}
+.pos{color:var(--ok)} .neg{color:var(--bad)}
+.thumb{width:54px;height:54px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:var(--bg2)}
+.thumb.empty{display:flex;align-items:center;justify-content:center;color:var(--ink2);font-size:.6rem;text-align:center}
+.alert{border-left:4px solid var(--orange);padding:8px 12px;background:var(--card);border-radius:0 10px 10px 0;margin:8px 0;font-size:.88rem}
+.alert.bad{border-color:var(--red)} .alert.ok{border-color:var(--green)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:.85rem;z-index:60;opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+.status{font-size:.72rem;color:var(--ink2);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ink2);display:inline-block}
+.dot.on{background:var(--green)} .dot.demo{background:var(--orange)} .dot.off{background:var(--red)}
+.room{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;min-height:86px}
+.room .rh{display:flex;justify-content:space-between;align-items:baseline;font-weight:600}
+.room .rh .cap{font-size:.72rem;color:var(--ink2);font-weight:400}
+.room .rh.full .cap{color:var(--bad)}
+.room .ppl{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.room .ppl span{font-size:.75rem;background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;cursor:pointer}
+.sticker-bg{position:absolute;right:-10px;top:-10px;width:120px;opacity:.18;pointer-events:none}
+.rel{position:relative;overflow:hidden}
+.hero{font-size:3.4rem}
+.lineup li{padding:8px 0;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:baseline}
+.lineup li .t{font-variant-numeric:tabular-nums;font-size:.7rem;color:var(--ink2);min-width:64px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.lineup li .b{font-size:1.15rem;font-weight:300}
+.lineup li .b.c1{color:var(--purple)} .lineup li .b.c2{color:var(--blue)} .lineup li .b.c3{color:var(--red)} .lineup li .b.c4{color:var(--orange)} .lineup li .b.c5{color:var(--green)}
+ul{padding-left:0;list-style:none;margin:0}
+.pub-hero{text-align:center;padding:20px 0 6px}
+.pub-hero h1{font-size:3rem}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.kv:last-child{border:none}
+.kv b{font-weight:600}
+.kv[onclick],.stat[onclick]{cursor:pointer}
+.kv[onclick]:active,.stat[onclick]:active{opacity:.6}
+.hidden{display:none!important}
+.pin-wrap{min-height:80vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px}
+.pin-wrap input{text-align:center;font-size:2rem;letter-spacing:.4em;max-width:220px}
+@media (min-width:720px){main{max-width:720px;margin:0 auto} header.top{max-width:720px;margin:0 auto} .grid3{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="top" id="hdr">
+  <div class="title">
+    <h1>Zubiazpi<br>Rural Fest <span class="badge-year">2026</span></h1>
+    <div class="sub" id="hdrSub">urriak 23 · 24 · 25</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+    <img class="logo" id="logoImg" alt="">
+    <div class="status" id="syncStatus"><span class="dot demo"></span><span>demo</span></div>
+  </div>
+</header>
+
+<main>
+<!-- ===== PIN GATE ===== -->
+<section class="view" id="v-pin">
+  <div class="pin-wrap">
+    <img id="pinLogo" style="width:110px" alt="">
+    <h2 style="margin:0">Zubiazpi Crew</h2>
+    <p class="muted">Introduce el PIN de la crew para entrar en el panel de control.<br>Si solo vienes al fest, usa la <a href="#" onclick="setPublic(true);return false">vista de asistente</a>.</p>
+    <input type="password" id="pinInput" maxlength="8" placeholder="····" autocapitalize="characters" onkeydown="if(event.key==='Enter')checkPin()">
+    <button class="btn primary" onclick="checkPin()">Entrar</button>
+  </div>
+</section>
+
+<!-- ===== INICIO ===== -->
+<section class="view" id="v-inicio">
+  <div class="grid2" id="homeStats"></div>
+  <div id="homeAlerts"></div>
+  <h2>Caja</h2>
+  <div class="card" id="homeCaja"></div>
+  <h2>Quién viene</h2>
+  <div class="card" id="homeQuien"></div>
+  <div class="btnrow">
+    <button class="btn" onclick="go('turnos')">Turnos comida/bebida</button>
+    <button class="btn" onclick="openGasto()">+ Gasto</button>
+    <button class="btn" onclick="openPago()">+ Pago</button>
+  </div>
+</section>
+
+<!-- ===== GENTE ===== -->
+<section class="view" id="v-gente">
+  <h2>Gente</h2>
+  <div class="search"><input id="qGente" placeholder="Buscar por nombre…" oninput="renderGente()"><button class="btn sm" onclick="openPago()">+ Pago</button></div>
+  <div class="filters" id="fGente"></div>
+  <div class="card tight" id="listGente"></div>
+</section>
+
+<!-- ===== GASTOS ===== -->
+<section class="view" id="v-gastos">
+  <h2>Gastos</h2>
+  <div class="grid2" id="gastosStats"></div>
+  <div class="btnrow"><button class="btn primary" onclick="openGasto()">+ Registrar gasto</button><button class="btn ghost" onclick="exportCSV('gastos')">Exportar CSV</button></div>
+  <div class="filters" id="fGastos"></div>
+  <div class="card tight" id="listGastos"></div>
+</section>
+
+<!-- ===== PRESUPUESTO ===== -->
+<section class="view" id="v-ppto">
+  <h2>Presupuesto vs real</h2>
+  <div class="grid2" id="pptoStats"></div>
+  <h3>Por partida</h3>
+  <div class="card tight" style="overflow-x:auto"><table id="pptoTable"></table></div>
+  <h3>Por komando (tope máximo)</h3>
+  <div class="card tight" id="pptoKomando"></div>
+  <h3>Ingresos</h3>
+  <div class="card tight"><table id="ingresosTable"></table></div>
+  <h3>Camisetas</h3>
+  <div class="card" id="camisBox"></div>
+</section>
+
+<!-- ===== HABITAS ===== -->
+<section class="view" id="v-habitas">
+  <h2>Habitas</h2>
+  <div class="grid3" id="habStats"></div>
+  <div class="alert" id="habHint">Toca una persona sin habita para asignarle una. Toca su nombre dentro de una habita para sacarla.</div>
+  <h3>Sin asignar (duermen en cama)</h3>
+  <div class="card tight" id="habSin"></div>
+  <h3>Arriba</h3>
+  <div class="grid2" id="habArriba"></div>
+  <h3>Abajo</h3>
+  <div class="grid2" id="habAbajo"></div>
+  <h3>Fuera</h3>
+  <div class="grid2" id="habFuera"></div>
+</section>
+
+<!-- ===== MÁS ===== -->
+<section class="view" id="v-mas">
+  <h2>Más</h2>
+  <div class="card tight">
+    <div class="row" onclick="go('preguntas')"><div class="grow"><div class="name">Preguntas y filtros</div><div class="meta">¿Cuánta gente bebe cerveza el sábado? Vegetarianos, furgos…</div></div><span>›</span></div>
+    <div class="row" onclick="go('turnos')"><div class="grow"><div class="name">Turnos comida y bebida</div><div class="meta">Cuántos comen y beben en cada turno, alergias</div></div><span>›</span></div>
+    <div class="row" onclick="go('programa')"><div class="grow"><div class="name">Programa</div><div class="meta">Horarios, conciertos, pinchadas</div></div><span>›</span></div>
+    <div class="row" onclick="go('tareas')"><div class="grow"><div class="name">Lista "no olvidar" y komandos</div><div class="meta">Checklist de material y responsables</div></div><span>›</span></div>
+    <div class="row" onclick="setPublic(true)"><div class="grow"><div class="name">Vista de asistente</div><div class="meta">Lo que ve la gente: programa, bonos, su estado</div></div><span>›</span></div>
+    <div class="row" onclick="go('ajustes')"><div class="grow"><div class="name">Ajustes y sincronización</div><div class="meta">Conexión con la hoja de Google, PIN, exportar</div></div><span>›</span></div>
+    <div class="row" onclick="logout()"><div class="grow"><div class="name">Cerrar sesión</div><div class="meta">Sale del panel de la crew y deja la vista de asistente</div></div><span>›</span></div>
+  </div>
+</section>
+
+<!-- ===== PREGUNTAS ===== -->
+<section class="view" id="v-preguntas">
+  <h2>Preguntas</h2>
+  <p class="muted small">Respuestas rápidas sobre el forms. "Viernes" cuenta txarri (+ indecisos si lo marcas) y los grupos que vienen el viernes; "Sábado" cuenta a todo el mundo.</p>
+  <div class="filters" id="qPresets"></div>
+  <div class="card">
+    <div class="grid2">
+      <div><label class="f">Campo</label><select id="qField" onchange="fillQValues();runQuery()"></select></div>
+      <div><label class="f">Valor</label><select id="qValue" onchange="runQuery()"></select></div>
+    </div>
+    <div class="grid2">
+      <div><label class="f">Día</label><select id="qDay" onchange="runQuery()"><option value="todos">Todo el finde (todos)</option><option value="viernes">Viernes</option><option value="sabado">Sábado</option></select></div>
+      <div><label class="f">Indecisos</label><select id="qDuda" onchange="runQuery()"><option value="si">Contar el viernes</option><option value="no">No contar el viernes</option></select></div>
+    </div>
+  </div>
+  <div class="card" id="qResult"></div>
+</section>
+
+<!-- ===== TURNOS ===== -->
+<section class="view" id="v-turnos">
+  <h2>Turnos</h2>
+  <p class="muted small">Cuánta gente hay en cada comida/fiesta para planificar comida y bebida. Viernes = bonos txarri (los grupos llegan el sábado al mediodía, salvo los que marques en Ajustes); sábado = todos; domingo = los que duermen allí.</p>
+  <div class="card tight"><label class="f">Indecisos ("me lo estoy pensando")</label><select id="tDuda" onchange="renderTurnos()"><option value="si">Contarlos el viernes</option><option value="no">No contarlos el viernes</option></select></div>
+  <div id="turnosBox"></div>
+</section>
+
+<!-- ===== PROGRAMA ===== -->
+<section class="view" id="v-programa">
+  <h2>Programa</h2>
+  <div id="programaBox"></div>
+</section>
+
+<!-- ===== TAREAS ===== -->
+<section class="view" id="v-tareas">
+  <h2>No olvidar</h2>
+  <div class="card tight" id="checkBox"></div>
+  <h2>Komandos</h2>
+  <div id="komandoBox"></div>
+</section>
+
+<!-- ===== AJUSTES ===== -->
+<section class="view" id="v-ajustes">
+  <h2>Ajustes</h2>
+  <div class="card">
+    <label class="f">URL del Apps Script (API)</label>
+    <input id="apiUrl" placeholder="https://script.google.com/macros/s/…/exec">
+    <label class="f">PIN crew</label>
+    <input id="pinSet" maxlength="8" autocapitalize="characters">
+    <label class="f">Quién usa este móvil</label>
+    <input id="whoSet" placeholder="Alex / Molli / Ania / Díaz">
+    <label class="f">Grupos que vienen ya el viernes (el resto llega el sábado al mediodía)</label>
+    <input id="vieSet" placeholder="Dario, Iñigo Losada, Mario">
+    <div class="btnrow"><button class="btn primary" onclick="saveSettings()">Guardar</button><button class="btn" onclick="sync(true)">Sincronizar ahora</button></div>
+    <div class="status" id="syncInfo"></div>
+  </div>
+  <div class="card">
+    <h3>Datos</h3>
+    <div class="btnrow">
+      <button class="btn sm" onclick="exportCSV('pagos')">Pagos CSV</button>
+      <button class="btn sm" onclick="exportCSV('gastos')">Gastos CSV</button>
+      <button class="btn sm" onclick="exportJSON()">Copia JSON</button>
+      <button class="btn sm" onclick="toggleTheme()">Tema claro/oscuro</button>
+      <button class="btn sm" onclick="cargarGastosConocidos()">Cargar gastos conocidos</button>
+      <button class="btn sm" onclick="logout()">Cerrar sesión</button>
+      <button class="btn sm danger" onclick="resetLocal()">Borrar datos locales</button>
+    </div>
+    <p class="small muted" id="pendingInfo"></p>
+    <p class="small muted">Instalar: en iPhone, Compartir → "Añadir a pantalla de inicio". En Android, menú ⋮ → "Instalar aplicación".</p>
+  </div>
+</section>
+
+<!-- ===== VISTA PÚBLICA ===== -->
+<section class="view" id="v-publico">
+  <div class="pub-hero"><img id="pubLogo" style="width:140px" alt=""><h1>Zubiazpi<br>Rural Fest</h1><div class="sub" style="font-style:italic">2026ko urriak 23 · 24 · 25</div></div>
+
+  <div class="card">
+    <h3 style="margin-top:0">¿Cómo voy?</h3>
+    <input id="pubName" placeholder="Escribe tu nombre…" oninput="pubLookup()">
+    <div id="pubResult" style="margin-top:10px"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Dónde</h3>
+    <p style="margin:0 0 8px"><b>Casa Rural La Roseta</b><br>Larruzetagoikoa, 48383, Bizkaia</p>
+    <p class="small muted" style="margin:0 0 10px">Los últimos 5 minutos son por un camino de cabras, el precio de la privacidad. El aparcamiento trasero de la casa queda para uso exclusivo de vehículos dormibles.</p>
+    <div class="btnrow" style="margin:0"><a class="btn primary" href="https://www.google.com/maps/search/?api=1&query=Casa+Rural+La+Roseta+Larruzetagoikoa+48383+Bizkaia" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Abrir en Google Maps</a><a class="btn" href="https://maps.apple.com/?q=Casa+Rural+La+Roseta+Larruzetagoikoa" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Apple Maps</a></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Lo de pagar</h3>
+    <div class="kv"><span>Bono TXAKUR</span><b>45 € · Marianito musikatua + concis + mañaneo y desayuno domingo</b></div>
+    <div class="kv"><span>Bono TXARRI</span><b>80 € · viernes amistoso + bono txakur</b></div>
+    <div class="kv"><span>Bizum</span><b><a href="tel:+34685702760">+34 685 70 27 60</a></b></div>
+    <p class="small muted" style="margin:8px 0 0">Pon tu nombre en el concepto del Bizum. Comida y alcohol blando van a nuestro cargo; el alcohol duro lo trae cada uno.</p>
+  </div>
+
+  <h2>Programa</h2>
+  <div id="pubPrograma"></div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Dormir</h3>
+    <p style="margin:0">Zubiazpi Crew, las bandas y los bonos Txarri (si hay hueco) dormimos en cama. Para los demás, colchonetas en las habitaciones o tiendas de campaña en el jardín. Si pediste cama, arriba en "¿Cómo voy?" te sale tu habita y con quién.</p>
+    <p class="small muted" style="margin:8px 0 0">Otro año más, quedáis avisados: aquí no se viene a dormir.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Qué traer</h3>
+    <ul style="padding-left:18px;list-style:disc;margin:0">
+      <li>Saco y esterilla o colchoneta si no tienes cama (y tienda si vas al jardín).</li>
+      <li>Alcohol duro si lo quieres: el blando y la comida los ponemos nosotros.</li>
+      <li>Ropa de abrigo: es octubre y estamos en el monte.</li>
+      <li>Linterna o frontal para el camino y el jardín.</li>
+      <li>Toalla, cargador, y ganas.</li>
+      <li>Si tienes alergias o eres vegeta y no lo pusiste en el forms, avisa a la crew.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Comunicado oficial</h3>
+    <div class="filters" style="margin:0 0 6px"><span class="chip on" id="lgEs" onclick="pubLang('es')">Castellano</span><span class="chip" id="lgEu" onclick="pubLang('eu')">Euskera</span></div>
+    <div id="comEs"></div>
+    <div id="comEu" class="hidden"></div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0">Normas de la casa</h3>
+    <p style="margin:0">Se ruega no compartir esta información con personas ajenas al festival. La Zubiazpi Crew se reserva el derecho de juicio sangriento y escarnio público a toda persona hallada dándole un trago a la birra y dejándola en una repisa antes de abrirse otra. Pórtate bien.</p>
+    <p class="small muted" style="margin:8px 0 0">Este evento no tiene fines lucrativos, nadie saca un duro y nos la jugamos bastante. Se ruega formalidad.</p>
+  </div>
+
+  <p class="small muted" style="text-align:center;margin:20px 0">¿Te he dicho ya que rellenes el forms?<br><a href="#" onclick="setPublic(false);return false">Soy de la crew</a></p>
+</section>
+</main>
+
+<nav class="tabs" id="tabs">
+  <button data-v="inicio" onclick="go('inicio')"><img data-ico="flor" alt="">Inicio</button>
+  <button data-v="gente" onclick="go('gente')"><img data-ico="bota" alt="">Gente</button>
+  <button data-v="gastos" onclick="go('gastos')"><img data-ico="pez" alt="">Gastos</button>
+  <button data-v="ppto" onclick="go('ppto')"><span class="ico">€</span>Ppto</button>
+  <button data-v="habitas" onclick="go('habitas')"><img data-ico="casa" alt="">Habitas</button>
+  <button data-v="mas" onclick="go('mas')"><span class="ico">⋯</span>Más</button>
+</nav>
+
+<!-- ===== SHEET: PAGO ===== -->
+<div class="sheet" id="shPago" onclick="if(event.target===this)closeSheet('shPago')">
+  <div class="panel">
+    <h2>Registrar pago</h2>
+    <label class="f">Nombre</label>
+    <input id="pNombre" list="dlNombres" placeholder="Quién paga">
+    <datalist id="dlNombres"></datalist>
+    <div class="grid2">
+      <div><label class="f">Tipo</label><select id="pTipo" onchange="pagoDefault()"><option value="bono">Bono</option><option value="cami">Camiseta (15 €)</option><option value="otro">Otro</option></select></div>
+      <div><label class="f">Importe €</label><input id="pImporte" type="number" inputmode="decimal" step="0.5"></div>
+    </div>
+    <div class="grid2">
+      <div><label class="f">Método</label><select id="pMetodo"><option>Bizum</option><option>Efectivo</option><option>Transferencia</option></select></div>
+      <div><label class="f">Fecha</label><input id="pFecha" type="date"></div>
+    </div>
+    <label class="f">Nota</label><input id="pNota" placeholder="opcional">
+    <div class="btnrow"><button class="btn primary" onclick="savePago()">Guardar</button><button class="btn ghost" onclick="closeSheet('shPago')">Cancelar</button></div>
+  </div>
+</div>
+
+<!-- ===== SHEET: GASTO ===== -->
+<div class="sheet" id="shGasto" onclick="if(event.target===this)closeSheet('shGasto')">
+  <div class="panel">
+    <h2>Registrar gasto</h2>
+    <label class="f">Concepto</label><input id="gConcepto" placeholder="Makro bebida, hielos, tortillas…">
+    <div class="grid2">
+      <div><label class="f">Partida</label><select id="gPartida"></select></div>
+      <div><label class="f">Importe €</label><input id="gImporte" type="number" inputmode="decimal" step="0.01"></div>
+    </div>
+    <div class="grid2">
+      <div><label class="f">Pagado por (de su bolsillo)</label><input id="gQuien" list="dlCrew" placeholder="Alex"></div>
+      <div><label class="f">Fecha</label><input id="gFecha" type="date"></div>
+    </div>
+    <datalist id="dlCrew"><option>Alex</option><option>Molli</option><option>Ania</option><option>Díaz</option><option>Haibon</option><option>Bote</option></datalist>
+    <label class="f">Ticket (foto)</label>
+    <input id="gFoto" type="file" accept="image/*" capture="environment" onchange="previewFoto(this)">
+    <img id="gPreview" class="hidden" style="width:100%;max-height:220px;object-fit:contain;border-radius:10px;margin-top:8px;border:1px solid var(--line)" alt="">
+    <label class="f">Nota</label><input id="gNota" placeholder="opcional">
+    <div class="btnrow"><button class="btn primary" id="gSave" onclick="saveGasto()">Guardar</button><button class="btn ghost" onclick="closeSheet('shGasto')">Cancelar</button></div>
+  </div>
+</div>
+
+<!-- ===== SHEET: PERSONA ===== -->
+<div class="sheet" id="shPersona" onclick="if(event.target===this)closeSheet('shPersona')">
+  <div class="panel" id="personaPanel"></div>
+</div>
+
+<!-- ===== SHEET: DETALLE ===== -->
+<div class="sheet" id="shDetalle" onclick="if(event.target===this)closeSheet('shDetalle')">
+  <div class="panel" id="detallePanel"></div>
+</div>
+
+<!-- ===== SHEET: FOTO ===== -->
+<div class="sheet" id="shFoto" onclick="closeSheet('shFoto')">
+  <div class="panel" style="text-align:center"><img id="fotoBig" style="max-width:100%;max-height:80vh;border-radius:10px" alt=""></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   ZUBIAZPI RURAL FEST 2026 · app de control
+   - Lee las respuestas del Google Forms (Sheet) vía Apps Script
+   - Escribe pagos, gastos, habitas en pestañas del mismo Sheet
+   - Sin API configurada funciona en modo demo con los datos embebidos
+   ========================================================= */
+const ICONS = __ICONS__;
+const RESPUESTAS_DEMO = __RESPUESTAS__;
+
+const PRECIOS = { txarri: 80, txakur: 45, grupo: 0, duda: 45, cami: 15 };
+const BONOS_PREVISTOS = { txarri: 11+12, txakur: 43, grupo: 19 }; // hoja "Gente" 2026 (12 crew + 11 txarri + 43 txakur + 19 artistas = 85)
+const RECAUDACION_PREVISTA = 3775;
+
+// Partidas de la hoja "Previsión 2026" agrupadas por komando
+const PARTIDAS = [
+  { id:'casa',       nombre:'Casa (alquiler)',      komando:'Organización', previsto:1900 },
+  { id:'fianza',     nombre:'Fianza (recuperable)', komando:'Organización', previsto:0, nota:'se devuelve al final', recuperable:true },
+  { id:'bebida',     nombre:'Bebida',               komando:'Bebida',       previsto:864.5 },
+  { id:'comida',     nombre:'Comida',               komando:'Comida',       previsto:576.33 },
+  { id:'hielo',      nombre:'Hielos',               komando:'Bebida',       previsto:0 },
+  { id:'camis',      nombre:'Camisetas',            komando:'Arte',         previsto:450 },
+  { id:'pegatinas',  nombre:'Pegatinas',            komando:'Arte',         previsto:30 },
+  { id:'carteles',   nombre:'Carteles',             komando:'Arte',         previsto:20 },
+  { id:'deco',       nombre:'Decoración',           komando:'Arte',         previsto:0 },
+  { id:'escenario',  nombre:'Escenario',            komando:'Música',       previsto:0 },
+  { id:'luces',      nombre:'Luces',                komando:'Música',       previsto:0 },
+  { id:'ferreteria', nombre:'Tornillos, cinta…',    komando:'Coordinación', previsto:8 },
+  { id:'mesa',       nombre:'Alquiler mesa',        komando:'Coordinación', previsto:0 },
+  { id:'otros',      nombre:'Otros',                komando:'Coordinación', previsto:0 },
+];
+const KOMANDOS = {
+  'Organización': { equipo:'Alex · Molli · Ania · Díaz', max:1900, nota:'+ 500 € fianza' },
+  'Tesorería':    { equipo:'Alex', max:0 },
+  'Música':       { equipo:'Molli', max:0 },
+  'Arte':         { equipo:'Ania', max:500 },
+  'Coordinación': { equipo:'Díaz · Alex', max:0 },
+  'Comida':       { equipo:'Help', max:700 },
+  'Bebida':       { equipo:'Help', max:1000 },
+};
+const ROOMS = [
+  { id:'A', zona:'arriba', cap:4 }, { id:'B', zona:'arriba', cap:4 }, { id:'C', zona:'arriba', cap:4 },
+  { id:'D', zona:'arriba', cap:4 }, { id:'E', zona:'arriba', cap:4 }, { id:'Tabaco', zona:'arriba', cap:4, nombre:'Tabaco (sala + habita)' },
+  { id:'1', zona:'abajo', cap:4 }, { id:'2', zona:'abajo', cap:4 }, { id:'3', zona:'abajo', cap:4 },
+  { id:'4', zona:'abajo', cap:4 }, { id:'5', zona:'abajo', cap:4 },
+  { id:'Furgo', zona:'fuera', cap:99, nombre:'Furgos (parking trasero)' },
+  { id:'Suelo', zona:'fuera', cap:99, nombre:'Esterilla / saco / tienda' },
+];
+const PROGRAMA = [
+  { dia:'Viernes 23', items:[
+    ['tarde','Ir llegando, montar, preparar'],['tarde','Prueba de sonido: Dotz y dale kaligula','c2'],['','Tomar un par · jam session'],['','Torneo de ping pong'],['','Pinchadita chill']]},
+  { dia:'Sábado 24', items:[
+    ['mañana','Prueba de sonido: funeral de caballo','c1'],['12:00','Marianito Musikatua + concierto de funeral de caballo','c1'],['14:30','Comer · hay que hacer masa'],
+    ['tras comer','Prueba de sonido: Nuzz y después Silkat (orden inverso a los conciertos)','c4'],
+    ['18:00','Dotz','c2'],['19:30','Silkat','c3'],['21:00','Nuzz','c4'],['22:30','dale kaligula','c5'],
+    ['00:00','Pinchadas: Zárraga · Ghost Karma · Puñales (orden por concretar)']]},
+  { dia:'Domingo 25', items:[['mañana','Desayuno'],['','Cleaning dead']]},
+];
+const NO_OLVIDAR = ['Presupuesto comida / bebida','Carteles habitaciones','Luces','Caja herramientas básica','Alargadores','Baldes para hielos','Bolsas basura','Hielos','Vasos y platos','Recordatorio gente','Recordatorio grupos','Orden conciertos','Rider','Sacos y esterillas','Txakurs duermen en habitas en el suelo','Veganos, intolerantes y alérgicos','Alcohol duro cada uno','Alfombra batería','Cuerdas guitarra · cables jack · púas','Hinchador colchonetas','Cargador iPad sonido','Bridas · taladro','Luces neón'];
+
+/* ---------- estado ---------- */
+const LS = k => 'zrf_' + k;
+let state = {
+  respuestas: [], pagos: [], gastos: [], habitas: {}, checks: {},
+  lastSync: null, demo: true, pending: []
+};
+const settings = {
+  get api(){ return localStorage.getItem(LS('api')) || ''; },
+  get pin(){ return localStorage.getItem(LS('pin')) || 'DALE'; },
+  get who(){ return localStorage.getItem(LS('who')) || ''; },
+  get authed(){ return localStorage.getItem(LS('authed')) === '1'; },
+};
+
+/* ---------- utilidades ---------- */
+const $ = id => document.getElementById(id);
+const norm = s => (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+const eur = n => (Math.round((n||0)*100)/100).toLocaleString('es-ES',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €';
+const eur0 = n => Math.round(n||0).toLocaleString('es-ES') + ' €';
+const today = () => new Date().toISOString().slice(0,10);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2200); }
+const jsq = s => esc(JSON.stringify(String(s==null?'':s)));
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function bonoOf(r){
+  if (/^se+h/i.test(r.toca||'')) return 'grupo';
+  if (/txarri/i.test(r.bono||'')) return 'txarri';
+  if (/txakur/i.test(r.bono||'')) return 'txakur';
+  return 'duda';
+}
+const BONO_LABEL = { txarri:'Txarri', txakur:'Txakur', grupo:'Grupo', duda:'Indeciso' };
+function dormirOf(r){
+  const d = r.dormir||'';
+  if (/cama/i.test(d)) return 'cama'; if (/furgo/i.test(d)) return 'furgo'; if (/esterilla|suelo/i.test(d)) return 'suelo'; if (/casa/i.test(d)) return 'casa'; return '?';
+}
+const DORMIR_LABEL = { cama:'Cama', furgo:'Furgo', suelo:'Esterilla', casa:'A casa', '?':'?' };
+// Los grupos llegan el sábado al mediodía, salvo los de la lista (Ajustes → "Grupos que vienen el viernes")
+function grupoViernes(r){ const l=(localStorage.getItem(LS('vie_grupos'))||'Dario, Iñigo Losada, Mario').split(',').map(norm).filter(Boolean); const n=norm(r.nombre); return l.some(x=>n===x); }
+function viernes(r, contarDuda=true){ const b=bonoOf(r); if(b==='grupo') return grupoViernes(r); return b==='txarri'||(contarDuda&&b==='duda'); }
+function debeOf(r){ return PRECIOS[bonoOf(r)]; }
+function pagosDe(nombre){ const n=norm(nombre); return state.pagos.filter(p=>norm(p.nombre)===n); }
+function pagadoBono(r){ return pagosDe(r.nombre).filter(p=>p.tipo!=='cami').reduce((s,p)=>s+(+p.importe||0),0); }
+// Fuente de verdad: la 3ª columna del Sheet ("Pagado?": Sí / No / N/A). Los pagos de la app solo aportan importe y método.
+function flagOf(r){ const f=(r.pagadoFlag||'').toString().trim(); if(/^s/i.test(f)) return 'si'; if(/^n\/?a$/i.test(f)||f==='') return 'na'; return 'no'; }
+function cobradoDe(r){ const pag=pagadoBono(r); return flagOf(r)==='si' ? (pag||debeOf(r)) : pag; }
+function estadoPago(r){
+  const debe=debeOf(r), pag=pagadoBono(r), f=flagOf(r);
+  if (f==='si') return {k:'ok', t:'Pagado'};
+  if (debe===0 || f==='na') return {k:'grupo', t:'No paga'};
+  if (pag>0) return {k:'warn', t:'Parcial '+eur0(pag)};
+  if (/^s/i.test(r.haPagado||'')) return {k:'warn', t:'Dice que pagó'};
+  return {k:'bad', t:'Pendiente'};
+}
+function setPagado(nombre, si){
+  const r=findResp(nombre); if(!r) return;
+  write('setPagado',{nombre:r.nombre, ts:r.ts, valor: si?'Sí':'No'},()=>{ r.pagadoFlag = si?'Sí':'No'; });
+}
+function findResp(nombre){ const n=norm(nombre); return state.respuestas.find(r=>norm(r.nombre)===n) || state.respuestas.find(r=>n && (norm(r.nombre).startsWith(n)||n.startsWith(norm(r.nombre)))); }
+
+/* ---------- persistencia local ---------- */
+function saveLocal(){ try{ localStorage.setItem(LS('state'), JSON.stringify({pagos:state.pagos,gastos:state.gastos,habitas:state.habitas,checks:state.checks,pending:state.pending,respuestas:state.respuestas,lastSync:state.lastSync})); }catch(e){ console.warn('localStorage lleno', e); } }
+function loadLocal(){ try{ const s=JSON.parse(localStorage.getItem(LS('state'))||'null'); if(s) Object.assign(state,s); }catch(e){} }
+
+/* ---------- API (Apps Script) ---------- */
+async function api(action, payload){
+  const url = settings.api; if(!url) throw new Error('sin api');
+  if (action==='all'){ const r=await fetch(url+'?action=all&t='+Date.now(),{cache:'no-store'}); if(!r.ok) throw new Error(r.status); return r.json(); }
+  const r = await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,payload,who:settings.who})});
+  if(!r.ok) throw new Error(r.status); const j=await r.json(); if(j.error) throw new Error(j.error); return j;
+}
+async function write(action, payload, local){
+  local(); saveLocal(); render();
+  if(!settings.api){ return; }
+  try { await api(action,payload); setStatus('on'); }
+  catch(e){ state.pending.push({action,payload,t:Date.now()}); saveLocal(); setStatus('off'); toast('Sin conexión: se guardará al sincronizar'); }
+}
+async function flushPending(){
+  while(state.pending.length){ const p=state.pending[0]; await api(p.action,p.payload); state.pending.shift(); saveLocal(); }
+}
+async function sync(manual){
+  if(!settings.api){ state.demo=true; if(!state.respuestas.length) state.respuestas=RESPUESTAS_DEMO; seedDemo(); setStatus('demo'); render(); if(manual) toast('Modo demo: configura la URL del Apps Script'); return; }
+  setStatus('sync');
+  try{
+    await flushPending();
+    const d = await api('all');
+    state.respuestas = (d.respuestas||[]).map(normalizeResp);
+    state.pagos = d.pagos||[]; state.gastos = d.gastos||[]; state.habitas = d.habitas||{}; if(d.checks) state.checks=d.checks;
+    state.demo=false; state.lastSync=Date.now(); saveLocal(); setStatus('on'); render(); if(manual) toast('Sincronizado');
+  }catch(e){ console.warn(e); setStatus('off'); if(manual) toast('No se pudo sincronizar: '+e.message); if(!state.respuestas.length){ state.respuestas=RESPUESTAS_DEMO; render(); } }
+}
+// El Apps Script devuelve las filas del forms con cabeceras largas; las mapeamos a claves cortas
+function normalizeResp(r){
+  if (r.nombre!==undefined) return r;
+  const g = re => { const k=Object.keys(r).find(k=>re.test(k)); return k? r[k] : ''; };
+  return { ts:g(/marca temporal|timestamp/i), nombre:g(/tu nombre/i), pagadoFlag:g(/^pagado\?/i), viene:g(/vas a venir/i), insta:g(/instagram/i), pack:g(/pack/i), toca:g(/tocar/i), bono:g(/te quedas/i), dormir:g(/dormir/i), comida:g(/comida/i), bebida:g(/bebes/i), haPagado:g(/has pagado/i), comentarios:g(/colaborar|propuestas/i) };
+}
+function setStatus(s){
+  const el=$('syncStatus'); const map={on:['on','conectado'],off:['off','sin conexión'],demo:['demo','demo'],sync:['','sincronizando…']};
+  el.innerHTML=`<span class="dot ${map[s][0]}"></span><span>${map[s][1]}${state.pending.length?' · '+state.pending.length+' pendientes':''}</span>`;
+  if($('syncInfo')) $('syncInfo').textContent = state.lastSync? 'Última sincronización: '+new Date(state.lastSync).toLocaleString('es-ES') : 'Nunca sincronizado';
+  if($('pendingInfo')) $('pendingInfo').textContent = state.pending.length? state.pending.length+' cambios pendientes de subir.' : 'Todo subido.';
+}
+// Gastos ya realizados que conocemos (se cargan en demo; con la API, botón "Cargar gastos conocidos" en Ajustes)
+const GASTOS_CONOCIDOS=[
+  {id:'g_casa',    fecha:'2026-10-01',concepto:'Casa Rural La Roseta (alquiler)',partida:'casa',    importe:1900, quien:'Alex',nota:'Pagados 2.400 € en total: 1.900 casa + 500 fianza',foto:''},
+  {id:'g_fianza',  fecha:'2026-10-01',concepto:'Fianza casa (se recupera)',       partida:'fianza',  importe:500,  quien:'Alex',nota:'Parte de los 2.400 €',foto:''},
+  {id:'g_camis',   fecha:'2026-10-08',concepto:'50 camisetas',                     partida:'camis',   importe:455,  quien:'',nota:'',foto:''},
+  {id:'g_pegas',   fecha:'2026-10-08',concepto:'Pegatinas',                        partida:'pegatinas',importe:28.57,quien:'',nota:'',foto:''},
+];
+function seedDemo(){
+  if (localStorage.getItem(LS('seeded2'))) return;
+  GASTOS_CONOCIDOS.forEach(g=>{ if(!state.gastos.some(x=>x.id===g.id)) state.gastos.push({...g}); });
+  localStorage.setItem(LS('seeded2'),'1'); saveLocal();
+}
+async function cargarGastosConocidos(){
+  if(!confirm('Añade los 4 gastos conocidos (casa 1.900, fianza 500, camisetas 455, pegatinas 28,57) si no existen ya. ¿Seguir?')) return;
+  for(const g of GASTOS_CONOCIDOS){ if(state.gastos.some(x=>x.id===g.id)) continue; await write('addGasto',{...g},()=>state.gastos.push({...g})); }
+  toast('Gastos cargados');
+}
+
+/* ---------- navegación ---------- */
+let currentView='inicio';
+function go(v){
+  currentView=v;
+  document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('active', s.id==='v-'+v));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.v===v || (v==='preguntas'||v==='programa'||v==='tareas'||v==='ajustes'||v==='turnos') && b.dataset.v==='mas'));
+  window.scrollTo(0,0); render();
+}
+function setPublic(on){
+  localStorage.setItem(LS('public'), on?'1':'0');
+  $('tabs').classList.toggle('hidden', on); $('hdr').classList.toggle('hidden', on);
+  if(on){ document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('active', s.id==='v-publico')); renderPublico(); }
+  else { if(settings.authed) go('inicio'); else showPin(); }
+}
+function showPin(){ $('tabs').classList.add('hidden'); $('hdr').classList.add('hidden'); document.querySelectorAll('section.view').forEach(s=>s.classList.toggle('active', s.id==='v-pin')); }
+function logout(){ localStorage.removeItem(LS('authed')); setPublic(true); toast('Sesión cerrada'); }
+function checkPin(){ if($('pinInput').value.trim().toUpperCase()===settings.pin.toUpperCase()){ localStorage.setItem(LS('authed'),'1'); $('tabs').classList.remove('hidden'); $('hdr').classList.remove('hidden'); go('inicio'); } else toast('PIN incorrecto'); }
+function openSheet(id){ $(id).classList.add('open'); }
+function closeSheet(id){ $(id).classList.remove('open'); }
+function toggleTheme(){ const cur=document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); const n=cur==='dark'?'light':'dark'; document.documentElement.dataset.theme=n; localStorage.setItem(LS('theme'),n); }
+
+/* ---------- cálculos ---------- */
+function calc(){
+  const R=state.respuestas, c={};
+  c.n=R.length; c.byBono={txarri:0,txakur:0,grupo:0,duda:0}; c.byDormir={cama:0,furgo:0,suelo:0,casa:0,'?':0};
+  c.viernes=R.filter(r=>viernes(r,true)).length; c.viernesSeguro=R.filter(r=>viernes(r,false)).length;
+  c.previstoForms=0; c.recaudadoBonos=0; c.pendientes=[]; c.dicenPagado=[]; c.sinApuntar=[]; c.recaudadoCamis=0; c.camisVendidas=0;
+  c.cobros=[];
+  R.forEach(r=>{ c.byBono[bonoOf(r)]++; c.byDormir[dormirOf(r)]++; c.previstoForms+=debeOf(r); const e=estadoPago(r); if(e.k==='bad'||e.k==='warn') c.pendientes.push(r); if(e.t==='Dice que pagó') c.dicenPagado.push(r);
+    const cob=cobradoDe(r); if(cob>0){ c.recaudadoBonos+=cob; c.cobros.push({nombre:r.nombre,importe:cob,estimado:!pagadoBono(r),bono:bonoOf(r)}); } });
+  state.pagos.forEach(p=>{ if(p.tipo==='cami'){ c.recaudadoCamis+=+p.importe||0; c.camisVendidas+=Math.max(1,Math.round((+p.importe||0)/PRECIOS.cami)); } else if(!findResp(p.nombre)){ c.recaudadoBonos+=+p.importe||0; c.sinApuntar.push(p); c.cobros.push({nombre:p.nombre,importe:+p.importe||0,sinForms:true}); } });
+  c.cobros.sort((a,b)=>b.importe-a.importe);
+  c.recaudado=c.recaudadoBonos+c.recaudadoCamis;
+  c.gastadoBruto=state.gastos.reduce((s,g)=>s+(+g.importe||0),0);
+  c.fianza=state.gastos.filter(g=>(PARTIDAS.find(p=>p.id===g.partida)||{}).recuperable).reduce((s,g)=>s+(+g.importe||0),0);
+  c.gastado=c.gastadoBruto-c.fianza; // gasto real sin la fianza (se recupera)
+  c.previstoGasto=PARTIDAS.reduce((s,p)=>s+p.previsto,0);
+  c.porPartida={}; PARTIDAS.forEach(p=>c.porPartida[p.id]=0); state.gastos.forEach(g=>{ c.porPartida[g.partida]=(c.porPartida[g.partida]||0)+(+g.importe||0); });
+  c.porKomando={}; Object.keys(KOMANDOS).forEach(k=>c.porKomando[k]=0); PARTIDAS.forEach(p=>{ if(!p.recuperable) c.porKomando[p.komando]+=c.porPartida[p.id]||0; });
+  c.caja=c.recaudado-c.gastadoBruto; c.resultadoPrev=c.previstoForms+c.recaudadoCamis-c.gastado;
+  c.vegetarianos=R.filter(r=>/veg|aler|intol|celia/i.test(r.comida||'')&&!/^no+$|^nop$|^ez$|nada/i.test(r.comida||''));
+  return c;
+}
+
+/* ---------- render ---------- */
+function render(){
+  const c=calc();
+  ({inicio:renderInicio,gente:renderGente,gastos:renderGastos,ppto:renderPpto,habitas:renderHabitas,preguntas:renderPreguntas,turnos:renderTurnos,programa:renderPrograma,tareas:renderTareas,ajustes:renderAjustes}[currentView]||(()=>{}))(c);
+}
+function pct(a,b){ return b? Math.min(100,Math.round(a/b*100)) : 0; }
+
+function renderInicio(c){
+  const okRec = c.recaudadoBonos>=c.previstoForms?'ok':(c.recaudadoBonos>=c.previstoForms*0.6?'warn':'bad');
+  $('homeStats').innerHTML = `
+    <div class="stat" onclick="showDetail('apuntados')"><div class="l">Apuntados</div><div class="v">${c.n}</div><div class="s">${c.byBono.txarri} txarri · ${c.byBono.txakur} txakur · ${c.byBono.grupo} grupos · ${c.byBono.duda} ?</div></div>
+    <div class="stat" onclick="showDetail('pendiente')"><div class="l">Pendientes de pago</div><div class="v ${c.pendientes.length?'bad':'ok'}">${c.pendientes.length}</div><div class="s">${c.dicenPagado.length} dicen que pagaron sin registro</div></div>
+    <div class="stat" onclick="showDetail('recaudado')"><div class="l">Recaudado bonos</div><div class="v ${okRec}">${eur0(c.recaudadoBonos)}</div><div class="s">de ${eur0(c.previstoForms)} según forms</div><div class="bar"><i class="${okRec}" style="width:${pct(c.recaudadoBonos,c.previstoForms)}%"></i></div></div>
+    <div class="stat" onclick="showDetail('gastado')"><div class="l">Gastado</div><div class="v ${c.gastado>c.previstoGasto?'bad':''}">${eur0(c.gastado)}</div><div class="s">de ${eur0(c.previstoGasto)} previstos</div><div class="bar"><i class="${c.gastado>c.previstoGasto?'bad':'warn'}" style="width:${pct(c.gastado,c.previstoGasto)}%"></i></div></div>`;
+  let al='';
+  if(c.sinApuntar.length) al+=`<div class="alert">${c.sinApuntar.length} pago(s) de gente que <b>no está en el forms</b>: ${c.sinApuntar.map(p=>esc(p.nombre)).join(', ')}. <a href="#" onclick="go('gente');setGenteFilter('sinforms');return false">Ver</a></div>`;
+  if(c.dicenPagado.length) al+=`<div class="alert">${c.dicenPagado.length} marcaron "he pagado" en el forms pero no tienes el pago registrado. <a href="#" onclick="go('gente');setGenteFilter('dicen');return false">Revisar</a></div>`;
+  if(c.byBono.duda) al+=`<div class="alert">${c.byBono.duda} indecisos ("me lo estoy pensando"). Cuentan como txakur (45 €) en la previsión.</div>`;
+  if(c.vegetarianos.length) al+=`<div class="alert ok">Comida: ${c.vegetarianos.map(r=>esc(r.nombre.split(' ')[0])+' ('+esc(r.comida)+')').join(' · ')}</div>`;
+  $('homeAlerts').innerHTML=al;
+  $('homeCaja').innerHTML=`
+    <div class="kv" onclick="showDetail('recaudado')"><span>Recaudado bonos</span><b class="mono">${eur(c.recaudadoBonos)}</b></div>
+    <div class="kv" onclick="showDetail('camis')"><span>Recaudado camisetas (${c.camisVendidas})</span><b class="mono">${eur(c.recaudadoCamis)}</b></div>
+    <div class="kv" onclick="showDetail('gastado')"><span>Gastado (sin fianza)</span><b class="mono neg">− ${eur(c.gastado)}</b></div>
+    <div class="kv"><span>Caja ahora</span><b class="mono ${c.caja>=0?'pos':'neg'}">${eur(c.caja)}</b></div>
+    <div class="kv" onclick="showDetail('fianza')"><span>Fianza adelantada (se recupera)</span><b class="mono">${eur(c.fianza)}</b></div>
+    <div class="kv"><span>Caja al recuperar la fianza</span><b class="mono ${c.caja+c.fianza>=0?'pos':'neg'}">${eur(c.caja+c.fianza)}</b></div>
+    <div class="kv" onclick="showDetail('pendiente')"><span>Previsión final (si pagan todos, gasto actual)</span><b class="mono ${c.resultadoPrev>=0?'pos':'neg'}">${eur(c.resultadoPrev)}</b></div>`;
+  $('homeQuien').innerHTML=`
+    <div class="kv" onclick="showDetail('viernes')"><span>Viernes (txarri + indecisos + grupos que vienen)</span><b>${c.viernes} <span class="muted small">(${c.viernesSeguro} seguros)</span></b></div>
+    <div class="kv" onclick="showDetail('apuntados')"><span>Sábado (todos)</span><b>${c.n}</b></div>
+    <div class="kv" onclick="showDetail('cama')"><span>Duermen en cama</span><b>${c.byDormir.cama}</b></div>
+    <div class="kv" onclick="showDetail('dormir')"><span>Esterilla / furgo / a casa</span><b>${c.byDormir.suelo} / ${c.byDormir.furgo} / ${c.byDormir.casa}</b></div>
+    <div class="kv" onclick="go('turnos')"><span>Beben cerveza / vino / blanco / otro</span><b>${cnt('bebida',/cerveza/i)} / ${cnt('bebida',/tinto/i)} / ${cnt('bebida',/blanco/i)} / ${cnt('bebida',/otro/i)}</b></div>`;
+}
+function cnt(f,re,filter){ return state.respuestas.filter(r=>re.test(r[f]||'')&&(!filter||filter(r))).length; }
+
+/* ---- Detalle al pinchar en inicio ---- */
+function showDetail(kind){
+  const c=calc(); let title='', rows=[], foot='';
+  const person=(r,right)=>`<div class="row" onclick="closeSheet('shDetalle');openPersona(${jsq(r.nombre)})"><div class="grow"><div class="name">${esc(r.nombre)}</div><div class="meta"><span class="chip ${bonoOf(r)}">${BONO_LABEL[bonoOf(r)]}</span><span>${DORMIR_LABEL[dormirOf(r)]}</span><span>${esc(r.bebida||'')}</span></div></div>${right||''}</div>`;
+  const grupo=(label,list)=>list.length?`<h3>${label} · ${list.length}</h3>`+list.map(r=>person(r)).join(''):'';
+  switch(kind){
+    case 'apuntados': title='Apuntados · '+c.n; rows=['txarri','txakur','duda','grupo'].map(b=>grupo(BONO_LABEL[b],state.respuestas.filter(r=>bonoOf(r)===b))); break;
+    case 'viernes': title='Viernes · '+c.viernes; rows=[grupo('Seguros',state.respuestas.filter(r=>viernes(r,false))),grupo('Indecisos',state.respuestas.filter(r=>bonoOf(r)==='duda'))]; break;
+    case 'cama': title='Duermen en cama · '+c.byDormir.cama; rows=[state.respuestas.filter(r=>dormirOf(r)==='cama').map(r=>person(r,state.habitas[norm(r.nombre)]?`<span class="chip">🛏 ${esc(state.habitas[norm(r.nombre)])}</span>`:'')).join('')]; break;
+    case 'dormir': title='Dónde duerme la gente'; rows=['suelo','furgo','casa','?'].map(d=>grupo(DORMIR_LABEL[d],state.respuestas.filter(r=>dormirOf(r)===d))); break;
+    case 'pendiente': title='Pendientes de pago · '+c.pendientes.length; rows=[c.pendientes.map(r=>person(r,`<b class="mono">${eur0(debeOf(r)-pagadoBono(r))}</b>`)).join('')]; foot=`Total por cobrar: <b>${eur(c.pendientes.reduce((s,r)=>s+debeOf(r)-pagadoBono(r),0))}</b>`; break;
+    case 'recaudado': title='Recaudado · '+eur0(c.recaudadoBonos); rows=[c.cobros.map(x=>{ const r=findResp(x.nombre); return `<div class="row" onclick="closeSheet('shDetalle');openPersona(${jsq(x.nombre)})"><div class="grow"><div class="name">${esc(x.nombre)}</div><div class="meta">${x.sinForms?'<span class="chip bad">sin forms</span>':`<span class="chip ${x.bono}">${BONO_LABEL[x.bono]}</span>`}${x.estimado?'<span>importe según bono (sin registro)</span>':'<span>'+pagosDe(x.nombre).map(p=>esc(p.metodo)+' '+esc(p.fecha)).join(', ')+'</span>'}</div></div><b class="mono">${eur(x.importe)}</b></div>`; }).join('')]; foot=`${c.cobros.length} personas · ${c.cobros.filter(x=>x.estimado).length} sin importe registrado (se asume el del bono)`; break;
+    case 'camis': title='Camisetas vendidas · '+c.camisVendidas; rows=[state.pagos.filter(p=>p.tipo==='cami').map(p=>`<div class="row"><div class="grow"><div class="name">${esc(p.nombre)}</div><div class="meta"><span>${esc(p.metodo)} · ${esc(p.fecha)}</span></div></div><b class="mono">${eur(p.importe)}</b></div>`).join('')||'<p class="muted">Ninguna todavía.</p>']; break;
+    case 'gastado': case 'fianza': { title=kind==='fianza'?'Fianza':'Gastado · '+eur0(c.gastado); const list=state.gastos.filter(g=>kind==='fianza'?(PARTIDAS.find(p=>p.id===g.partida)||{}).recuperable:true);
+      const byP={}; list.forEach(g=>{(byP[g.partida]=byP[g.partida]||[]).push(g);});
+      rows=Object.entries(byP).map(([pid,gs])=>{ const p=PARTIDAS.find(x=>x.id===pid)||{nombre:pid}; return `<h3>${p.nombre} · ${eur0(gs.reduce((s,g)=>s+(+g.importe||0),0))}${p.previsto?` <span class="muted small">/ ${eur0(p.previsto)} prev.</span>`:''}</h3>`+gs.map(g=>`<div class="row" onclick="closeSheet('shDetalle');editGasto('${g.id}')"><div class="grow"><div class="name">${esc(g.concepto)}</div><div class="meta"><span>${esc(g.fecha||'')}</span>${g.quien?`<span>pagó ${esc(g.quien)}</span>`:''}</div></div><b class="mono">${eur(g.importe)}</b></div>`).join(''); });
+      const adel={}; list.forEach(g=>{ if(g.quien) adel[g.quien]=(adel[g.quien]||0)+(+g.importe||0); }); foot='Adelantado: '+(Object.entries(adel).map(([k,v])=>`${esc(k)} ${eur0(v)}`).join(' · ')||'—'); break; }
+  }
+  $('detallePanel').innerHTML=`<h2>${title}</h2>${rows.join('')||'<p class="muted">Nada.</p>'}${foot?`<p class="small muted" style="margin-top:12px">${foot}</p>`:''}<div class="btnrow"><button class="btn ghost" onclick="closeSheet('shDetalle')">Cerrar</button></div>`;
+  openSheet('shDetalle');
+}
+
+/* ---- Gente ---- */
+let genteFilter='todos';
+const GENTE_FILTERS=[['todos','Todos'],['pendiente','Pendientes'],['pagado','Pagados'],['dicen','Dicen que pagaron'],['txarri','Txarri'],['txakur','Txakur'],['grupo','Grupos'],['duda','Indecisos'],['cama','En cama'],['sinforms','Pagado sin forms']];
+function setGenteFilter(f){ genteFilter=f; renderGente(); }
+function renderGente(){
+  $('fGente').innerHTML=GENTE_FILTERS.map(([k,l])=>`<span class="chip ${genteFilter===k?'on':''}" onclick="setGenteFilter('${k}')">${l}</span>`).join('');
+  const q=norm($('qGente').value);
+  let rows=[];
+  if(genteFilter==='sinforms'){
+    rows=state.pagos.filter(p=>!findResp(p.nombre)).map(p=>`<div class="row" onclick="openPersona(${jsq(p.nombre)})"><div class="grow"><div class="name">${esc(p.nombre)}</div><div class="meta"><span class="chip bad">No está en el forms</span><span>${eur0(p.importe)} · ${esc(p.metodo||'')} · ${esc(p.fecha||'')}</span></div></div></div>`);
+  } else {
+    const list=state.respuestas.filter(r=>{
+      if(q && !norm(r.nombre).includes(q)) return false;
+      const e=estadoPago(r), b=bonoOf(r);
+      switch(genteFilter){ case 'pendiente': return e.k==='bad'||e.k==='warn'; case 'pagado': return e.k==='ok'; case 'dicen': return e.t==='Dice que pagó'; case 'txarri': case 'txakur': case 'grupo': case 'duda': return b===genteFilter; case 'cama': return dormirOf(r)==='cama'; default: return true; }
+    }).sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
+    rows=list.map(r=>{ const e=estadoPago(r), b=bonoOf(r); return `<div class="row" onclick="openPersona(${jsq(r.nombre)})">
+      <div class="grow"><div class="name">${esc(r.nombre)}</div>
+      <div class="meta"><span class="chip ${b}">${BONO_LABEL[b]}</span><span>${DORMIR_LABEL[dormirOf(r)]}</span><span>${esc(r.bebida||'')}</span>${state.habitas[norm(r.nombre)]?`<span>🛏 ${esc(state.habitas[norm(r.nombre)])}</span>`:''}</div></div>
+      <span class="chip ${e.k}" ${e.k==='bad'||e.k==='warn'?`onclick="event.stopPropagation();openPago(${jsq(r.nombre)})"`:''}>${e.t}</span></div>`; });
+  }
+  $('listGente').innerHTML = rows.join('') || '<p class="muted" style="padding:10px">Nada por aquí.</p>';
+}
+function openPersona(nombre){
+  const r=findResp(nombre); const pagos=pagosDe(nombre);
+  const hab=state.habitas[norm(nombre)]||'';
+  let h=`<h2>${esc(nombre)}</h2>`;
+  if(r){ const b=bonoOf(r), e=estadoPago(r);
+    h+=`<div class="meta" style="margin:6px 0 10px;display:flex;gap:6px;flex-wrap:wrap"><span class="chip ${b}">${BONO_LABEL[b]} · ${eur0(debeOf(r))}</span><span class="chip ${e.k}">${e.t}</span></div>
+      <div class="card tight">
+      <div class="kv"><span>Se queda</span><b>${esc(r.bono)}</b></div>
+      <div class="kv"><span>Duerme</span><b>${esc(r.dormir)}</b></div>
+      <div class="kv"><span>Bebe</span><b>${esc(r.bebida)}</b></div>
+      <div class="kv"><span>Toca</span><b>${/^se+h/i.test(r.toca||'')?'Sí':'No'}</b></div>
+      ${r.comida?`<div class="kv"><span>Comida</span><b>${esc(r.comida)}</b></div>`:''}
+      ${r.pack?`<div class="kv"><span>Pack</span><b>${esc(r.pack)}</b></div>`:''}
+      ${r.insta?`<div class="kv"><span>Insta</span><b>${esc(r.insta)}</b></div>`:''}
+      <div class="kv"><span>Dice que pagó (forms)</span><b>${esc(r.haPagado||'—')}</b></div>
+      ${r.comentarios?`<div class="kv"><span>Comentario</span><b style="font-weight:400">${esc(r.comentarios)}</b></div>`:''}
+      </div>`;
+    if(dormirOf(r)==='cama'||hab) h+=`<label class="f">Habita</label><select onchange="setHabita(${jsq(nombre)},this.value)"><option value="">— sin asignar —</option>${ROOMS.map(x=>`<option value="${x.id}" ${hab===x.id?'selected':''}>${x.nombre||x.id}</option>`).join('')}</select>`;
+  } else h+=`<div class="alert bad">No está en el forms. ¿Se ha apuntado con otro nombre? Puedes editar el nombre del pago para enlazarlo.</div>`;
+  h+=`<h3>Pagos registrados</h3>`;
+  h+= pagos.length? pagos.map(p=>`<div class="row"><div class="grow"><div class="name">${eur(p.importe)} <span class="chip">${esc(p.tipo)}</span></div><div class="meta"><span>${esc(p.metodo)} · ${esc(p.fecha)} ${p.nota?'· '+esc(p.nota):''}</span></div></div><button class="btn sm ghost" onclick="editPago('${p.id}')">Editar</button><button class="btn sm danger" onclick="delPago('${p.id}')">Borrar</button></div>`).join('') : '<p class="muted small">Ninguno.</p>';
+  if(r && debeOf(r)>0) h+= flagOf(r)==='si'
+    ? `<div class="alert ok">Marcado como <b>pagado</b> en la columna "Pagado?" del Sheet. <a href="#" onclick="setPagado(${jsq(r.nombre)},false);closeSheet('shPersona');return false">Desmarcar</a></div>`
+    : `<div class="alert">En el Sheet figura como <b>no pagado</b>. <a href="#" onclick="setPagado(${jsq(r.nombre)},true);closeSheet('shPersona');return false">Marcar pagado sin registrar importe</a></div>`;
+  h+=`<div class="btnrow"><button class="btn primary" onclick="closeSheet('shPersona');openPago(${jsq(nombre)})">+ Pago</button><button class="btn ghost" onclick="closeSheet('shPersona')">Cerrar</button></div>`;
+  $('personaPanel').innerHTML=h; openSheet('shPersona');
+}
+let editingPagoId=null;
+function openPago(nombre){
+  editingPagoId=null; $('dlNombres').innerHTML=state.respuestas.map(r=>`<option value="${esc(r.nombre)}">`).join('');
+  $('pNombre').value=nombre||''; $('pTipo').value='bono'; $('pMetodo').value='Bizum'; $('pFecha').value=today(); $('pNota').value=''; pagoDefault(); openSheet('shPago');
+}
+function editPago(id){ const p=state.pagos.find(x=>x.id===id); if(!p) return; closeSheet('shPersona'); openPago(p.nombre); editingPagoId=id; $('pTipo').value=p.tipo||'bono'; $('pImporte').value=p.importe; $('pMetodo').value=p.metodo||'Bizum'; $('pFecha').value=p.fecha||today(); $('pNota').value=p.nota||''; }
+function pagoDefault(){ const t=$('pTipo').value; const r=findResp($('pNombre').value); $('pImporte').value = t==='cami'?PRECIOS.cami : t==='bono'? (r? Math.max(0,debeOf(r)-pagadoBono(r)) || debeOf(r) : 45) : ''; }
+$('pNombre').addEventListener('change', pagoDefault);
+function savePago(){
+  const p={id:uid(),nombre:$('pNombre').value.trim(),tipo:$('pTipo').value,importe:+$('pImporte').value,metodo:$('pMetodo').value,fecha:$('pFecha').value,nota:$('pNota').value.trim(),who:settings.who};
+  if(!p.nombre||!(p.importe>0)) return toast('Falta nombre o importe');
+  closeSheet('shPago');
+  if(editingPagoId){ p.id=editingPagoId; write('updPago',p,()=>{ const i=state.pagos.findIndex(x=>x.id===p.id); if(i>=0) state.pagos[i]=p; }); editingPagoId=null; }
+  else write('addPago',p,()=>state.pagos.push(p));
+  if(p.tipo==='bono'){ const r=findResp(p.nombre); if(r && flagOf(r)!=='si' && pagadoBono(r)>=debeOf(r)) setPagado(r.nombre,true); }
+  toast('Pago guardado'); if(!findResp(p.nombre)) toast(p.nombre+' no está en el forms');
+}
+function delPago(id){ if(!confirm('¿Borrar este pago?')) return; closeSheet('shPersona'); write('delPago',{id},()=>{state.pagos=state.pagos.filter(p=>p.id!==id);}); }
+function setHabita(nombre,hab){ const k=norm(nombre); write('setHabita',{nombre,habita:hab},()=>{ if(hab) state.habitas[k]=hab; else delete state.habitas[k]; }); }
+
+/* ---- Gastos ---- */
+let gastoFilter='todos';
+function renderGastos(c){
+  $('gastosStats').innerHTML=`<div class="stat"><div class="l">Total gastado</div><div class="v">${eur0(c.gastado)}</div><div class="s">${state.gastos.length} apuntes · + ${eur0(c.fianza)} fianza recuperable</div></div><div class="stat"><div class="l">Adelantado por la crew</div><div class="v">${eur0(state.gastos.filter(g=>g.quien&&!/bote|caja/i.test(g.quien)).reduce((s,g)=>s+(+g.importe||0),0))}</div><div class="s">${Object.entries(state.gastos.reduce((m,g)=>{if(g.quien){m[g.quien]=(m[g.quien]||0)+(+g.importe||0);}return m;},{})).map(([k,v])=>k+' '+eur0(v)).join(' · ')||'—'}</div></div>`;
+  const ks=['todos',...Object.keys(KOMANDOS).filter(k=>PARTIDAS.some(p=>p.komando===k))];
+  $('fGastos').innerHTML=ks.map(k=>`<span class="chip ${gastoFilter===k?'on':''}" onclick="gastoFilter='${k}';renderGastos(calc())">${k==='todos'?'Todos':k}</span>`).join('');
+  const list=state.gastos.filter(g=>gastoFilter==='todos'||(PARTIDAS.find(p=>p.id===g.partida)||{}).komando===gastoFilter).sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+  $('listGastos').innerHTML=list.map(g=>{ const p=PARTIDAS.find(x=>x.id===g.partida)||{nombre:g.partida}; return `<div class="row">
+    ${g.foto?`<img class="thumb" src="${g.foto}" onclick="$('fotoBig').src='${g.foto}';openSheet('shFoto')" alt="ticket">`:`<div class="thumb empty">sin<br>ticket</div>`}
+    <div class="grow"><div class="name">${esc(g.concepto)}</div><div class="meta"><span class="chip">${esc(p.nombre)}</span><span>${esc(g.fecha||'')}</span>${g.quien?`<span>pagó ${esc(g.quien)}</span>`:''}${g.nota?`<span>${esc(g.nota)}</span>`:''}</div></div>
+    <div style="text-align:right"><div class="mono" style="font-weight:600">${eur(g.importe)}</div><button class="btn sm ghost" onclick="editGasto('${g.id}')">editar</button> <button class="btn sm ghost" onclick="delGasto('${g.id}')">borrar</button></div></div>`; }).join('') || '<p class="muted" style="padding:10px">Sin gastos todavía.</p>';
+}
+let fotoData='', editingGasto=null;
+function openGasto(){ editingGasto=null; $('gPartida').innerHTML=PARTIDAS.map(p=>`<option value="${p.id}">${p.nombre} · ${p.komando}</option>`).join(''); $('gConcepto').value='';$('gImporte').value='';$('gQuien').value=settings.who;$('gFecha').value=today();$('gNota').value='';$('gFoto').value='';$('gPreview').classList.add('hidden');fotoData=''; openSheet('shGasto'); }
+function editGasto(id){ const g=state.gastos.find(x=>x.id===id); if(!g) return; openGasto(); editingGasto=g; $('gConcepto').value=g.concepto;$('gPartida').value=g.partida;$('gImporte').value=g.importe;$('gQuien').value=g.quien||'';$('gFecha').value=g.fecha||today();$('gNota').value=g.nota||''; if(g.foto){ $('gPreview').src=g.foto; $('gPreview').classList.remove('hidden'); } }
+function previewFoto(input){
+  const f=input.files&&input.files[0]; if(!f) return;
+  const img=new Image(); const url=URL.createObjectURL(f);
+  img.onload=()=>{ const max=1200; let w=img.width,h=img.height; if(w>h&&w>max){h*=max/w;w=max;} else if(h>max){w*=max/h;h=max;}
+    const cv=document.createElement('canvas'); cv.width=w; cv.height=h; cv.getContext('2d').drawImage(img,0,0,w,h);
+    fotoData=cv.toDataURL('image/jpeg',0.72); $('gPreview').src=fotoData; $('gPreview').classList.remove('hidden'); URL.revokeObjectURL(url); };
+  img.src=url;
+}
+async function saveGasto(){
+  const g={id:editingGasto?editingGasto.id:uid(),fecha:$('gFecha').value,concepto:$('gConcepto').value.trim(),partida:$('gPartida').value,importe:+$('gImporte').value,quien:$('gQuien').value.trim(),nota:$('gNota').value.trim(),foto:editingGasto?(editingGasto.foto||''):'',who:settings.who};
+  if(!g.concepto||!(g.importe>0)) return toast('Falta concepto o importe');
+  closeSheet('shGasto');
+  if(fotoData){
+    if(settings.api){ try{ $('gSave').disabled=true; const r=await api('uploadTicket',{id:g.id,data:fotoData,name:g.concepto}); g.foto=r.url||''; }catch(e){ g.foto=fotoData; toast('Foto guardada solo en el móvil'); } finally{ $('gSave').disabled=false; } }
+    else g.foto=fotoData;
+  }
+  const payload={...g}; if(payload.foto&&payload.foto.startsWith('data:')) payload.foto='(local)';
+  if(editingGasto){ write('updGasto',payload,()=>{ const i=state.gastos.findIndex(x=>x.id===g.id); if(i>=0) state.gastos[i]=g; }); editingGasto=null; }
+  else write('addGasto',payload,()=>state.gastos.push(g));
+  toast('Gasto guardado');
+}
+function delGasto(id){ if(!confirm('¿Borrar este gasto?')) return; write('delGasto',{id},()=>{state.gastos=state.gastos.filter(g=>g.id!==id);}); }
+
+/* ---- Presupuesto ---- */
+function renderPpto(c){
+  const dev=c.previstoGasto-c.gastado;
+  $('pptoStats').innerHTML=`
+    <div class="stat"><div class="l">Gasto previsto</div><div class="v">${eur0(c.previstoGasto)}</div><div class="s">hoja Previsión 2026</div></div>
+    <div class="stat"><div class="l">Gasto real</div><div class="v ${dev<0?'bad':'ok'}">${eur0(c.gastado)}</div><div class="s">${dev>=0?'quedan '+eur0(dev):'excedido en '+eur0(-dev)}</div></div>
+    <div class="stat"><div class="l">Ingreso previsto</div><div class="v">${eur0(RECAUDACION_PREVISTA)}</div><div class="s">85 bonos (hoja Gente)</div></div>
+    <div class="stat"><div class="l">Ingreso según forms</div><div class="v ${c.previstoForms<RECAUDACION_PREVISTA?'warn':'ok'}">${eur0(c.previstoForms)}</div><div class="s">${c.n} apuntados · ${eur0(c.recaudadoBonos)} ya cobrados</div></div>`;
+  let t=`<tr><th>Partida</th><th class="n">Previsto</th><th class="n">Real</th><th class="n">Desv.</th></tr>`;
+  PARTIDAS.forEach(p=>{ const r=c.porPartida[p.id]||0; if(p.recuperable||(!p.previsto&&!r)) return; const d=p.previsto-r; t+=`<tr><td>${p.nombre}<br><span class="small muted">${p.komando}${p.nota?' · '+p.nota:''}</span></td><td class="n">${eur0(p.previsto)}</td><td class="n">${eur0(r)}</td><td class="n ${d<0?'neg':'pos'}">${d>=0?'+':''}${eur0(d)}</td></tr>`; });
+  if(c.fianza) t+=`<tr><td class="muted">Fianza (se recupera, no cuenta)</td><td class="n muted">—</td><td class="n muted">${eur0(c.fianza)}</td><td class="n muted">—</td></tr>`;
+  t+=`<tr class="tot"><td>Total</td><td class="n">${eur0(c.previstoGasto)}</td><td class="n">${eur0(c.gastado)}</td><td class="n ${dev<0?'neg':'pos'}">${dev>=0?'+':''}${eur0(dev)}</td></tr>`;
+  $('pptoTable').innerHTML=t;
+  $('pptoKomando').innerHTML=Object.entries(KOMANDOS).filter(([k,v])=>v.max||c.porKomando[k]).map(([k,v])=>{ const r=c.porKomando[k]||0; const p=pct(r,v.max); const cls=v.max? (r>v.max?'bad':p>85?'warn':'ok') : (r?'warn':''); return `<div style="padding:8px 0;border-bottom:1px solid var(--line)"><div style="display:flex;justify-content:space-between"><b>${k}</b><span class="mono">${eur0(r)} / ${eur0(v.max)}</span></div><div class="small muted">${v.equipo}${v.nota?' · '+v.nota:''}</div><div class="bar"><i class="${cls}" style="width:${v.max?p:(r?100:0)}%"></i></div></div>`; }).join('');
+  const bonosPrev=[['Txarri (crew + invitados)',BONOS_PREVISTOS.txarri,80],['Txakur',BONOS_PREVISTOS.txakur,45],['Grupos',BONOS_PREVISTOS.grupo,0]];
+  let it=`<tr><th>Bono</th><th class="n">Prev.</th><th class="n">Forms</th><th class="n">Pagados</th></tr>`;
+  const pagadosBono=k=>state.respuestas.filter(r=>bonoOf(r)===k&&estadoPago(r).k==='ok').length;
+  it+=`<tr><td>Txarri · 80 €</td><td class="n">${BONOS_PREVISTOS.txarri}</td><td class="n">${c.byBono.txarri}</td><td class="n">${pagadosBono('txarri')}</td></tr>`;
+  it+=`<tr><td>Txakur · 45 €</td><td class="n">${BONOS_PREVISTOS.txakur}</td><td class="n">${c.byBono.txakur}</td><td class="n">${pagadosBono('txakur')}</td></tr>`;
+  it+=`<tr><td>Indecisos · (45 €)</td><td class="n">—</td><td class="n">${c.byBono.duda}</td><td class="n">${pagadosBono('duda')}</td></tr>`;
+  it+=`<tr><td>Grupos · 0 €</td><td class="n">${BONOS_PREVISTOS.grupo}</td><td class="n">${c.byBono.grupo}</td><td class="n">—</td></tr>`;
+  it+=`<tr class="tot"><td>Ingresos</td><td class="n">${eur0(RECAUDACION_PREVISTA)}</td><td class="n">${eur0(c.previstoForms)}</td><td class="n">${eur0(c.recaudadoBonos)}</td></tr>`;
+  $('ingresosTable').innerHTML=it;
+  $('camisBox').innerHTML=`<div class="kv"><span>Previsto</span><b>30 de 50 camis · 450 €</b></div><div class="kv"><span>Vendidas</span><b>${c.camisVendidas} · ${eur0(c.recaudadoCamis)}</b></div><div class="kv"><span>Coste camis (gasto real)</span><b>${eur0(c.porPartida.camis||0)}</b></div><div class="btnrow"><button class="btn sm" onclick="openPago();$('pTipo').value='cami';pagoDefault()">+ Vender camiseta</button></div>`;
+}
+
+/* ---- Habitas ---- */
+function renderHabitas(c){
+  const cama=state.respuestas.filter(r=>dormirOf(r)==='cama');
+  const asignados=Object.keys(state.habitas).length;
+  const camas=ROOMS.filter(r=>r.cap<99).reduce((s,r)=>s+r.cap,0);
+  $('habStats').innerHTML=`<div class="stat"><div class="l">Piden cama</div><div class="v">${cama.length}</div></div><div class="stat"><div class="l">Asignados</div><div class="v">${asignados}</div></div><div class="stat"><div class="l">Plazas</div><div class="v">${camas}</div><div class="s">11 habitas</div></div>`;
+  const sin=cama.filter(r=>!state.habitas[norm(r.nombre)]);
+  $('habSin').innerHTML=sin.map(r=>`<div class="row" onclick="openPersona(${jsq(r.nombre)})"><div class="grow"><div class="name">${esc(r.nombre)}</div><div class="meta"><span class="chip ${bonoOf(r)}">${BONO_LABEL[bonoOf(r)]}</span>${r.pack?`<span>pack: ${esc(r.pack).slice(0,40)}</span>`:''}</div></div><span>›</span></div>`).join('')||'<p class="muted small" style="padding:8px">Todo el mundo tiene habita.</p>';
+  const byRoom={}; Object.entries(state.habitas).forEach(([n,h])=>{(byRoom[h]=byRoom[h]||[]).push(n);});
+  const nameOf=n=>{ const r=state.respuestas.find(x=>norm(x.nombre)===n); return r?r.nombre:n; };
+  const roomHtml=r=>{ const ppl=byRoom[r.id]||[]; const extra=r.id==='Furgo'?state.respuestas.filter(x=>dormirOf(x)==='furgo'&&!state.habitas[norm(x.nombre)]).map(x=>x.nombre):r.id==='Suelo'?state.respuestas.filter(x=>dormirOf(x)==='suelo'&&!state.habitas[norm(x.nombre)]).map(x=>x.nombre):[];
+    return `<div class="room"><div class="rh ${ppl.length>r.cap?'full':''}"><span>${r.nombre||'Habita '+r.id}</span><span class="cap">${r.cap<99?ppl.length+'/'+r.cap:ppl.length+extra.length}</span></div><div class="ppl">${ppl.map(n=>`<span onclick="openPersona('${esc(nameOf(n))}')">${esc(nameOf(n))}</span>`).join('')}${extra.map(n=>`<span style="opacity:.6">${esc(n)}</span>`).join('')}</div></div>`; };
+  $('habArriba').innerHTML=ROOMS.filter(r=>r.zona==='arriba').map(roomHtml).join('');
+  $('habAbajo').innerHTML=ROOMS.filter(r=>r.zona==='abajo').map(roomHtml).join('');
+  $('habFuera').innerHTML=ROOMS.filter(r=>r.zona==='fuera').map(roomHtml).join('');
+}
+
+/* ---- Preguntas ---- */
+const QFIELDS={ bebida:'¿Qué bebe?', bono:'¿Cuánto se queda?', dormir:'¿Dónde duerme?', toca:'¿Toca?', haPagado:'¿Ha pagado? (forms)', pagadoFlag:'Pagado? (columna sheet)', estado:'Estado de pago (app)', comida:'Comida (con texto)', pack:'Pack (con texto)' };
+const QPRESETS=[['Cerveza el viernes','bebida','Cerveza','viernes'],['Cerveza el sábado','bebida','Cerveza','sabado'],['Vino tinto / kali','bebida','Vino tinto / kali','todos'],['Vegetarianos / alergias','comida','*','todos'],['Furgos','dormir','Tengo furgo','todos'],['Indecisos','bono','Me lo estoy pensando','todos'],['Quién toca','toca','Seeeehh','todos'],['Pendientes de pago','estado','Pendiente','todos']];
+function renderPreguntas(){
+  if(!$('qField').options.length){ $('qField').innerHTML=Object.entries(QFIELDS).map(([k,v])=>`<option value="${k}">${v}</option>`).join(''); fillQValues(); }
+  $('qPresets').innerHTML=QPRESETS.map((p,i)=>`<span class="chip" onclick="preset(${i})">${p[0]}</span>`).join('');
+  runQuery();
+}
+function valOf(r,f){ if(f==='estado') return estadoPago(r).t.replace(/ .*/,''); if(f==='toca') return /^se+h/i.test(r.toca||'')?'Seeeehh':'No'; return r[f]||''; }
+function fillQValues(){ const f=$('qField').value; let vals; if(f==='comida'||f==='pack') vals=['*']; else vals=[...new Set(state.respuestas.map(r=>valOf(r,f)))].filter(Boolean).sort(); $('qValue').innerHTML=vals.map(v=>`<option value="${esc(v)}">${v==='*'?'(cualquier texto)':esc(v)}</option>`).join(''); }
+function preset(i){ const p=QPRESETS[i]; $('qField').value=p[1]; fillQValues(); $('qValue').value=p[2]; $('qDay').value=p[3]; runQuery(); }
+function runQuery(){
+  const f=$('qField').value, v=$('qValue').value, day=$('qDay').value, duda=$('qDuda').value==='si';
+  const base=state.respuestas.filter(r=>day==='todos'||day==='sabado'||viernes(r,duda));
+  const hit=base.filter(r=>{ const x=valOf(r,f); if(v==='*') return x && !/^(no+|nop|ez|nada|nooo|nouu)$/i.test(x.trim()); return x===v; });
+  const bono={}; hit.forEach(r=>{bono[bonoOf(r)]=(bono[bonoOf(r)]||0)+1;});
+  $('qResult').innerHTML=`<div class="stat" style="border:none;background:none;padding:0"><div class="l">${QFIELDS[f]} = ${v==='*'?'algo':esc(v)} · ${day==='todos'?'todo el finde':day}</div><div class="v hero">${hit.length}<span class="muted" style="font-size:1.2rem"> / ${base.length}</span></div><div class="s">${Object.entries(bono).map(([k,n])=>BONO_LABEL[k]+' '+n).join(' · ')}</div></div>
+    <div style="margin-top:10px">${hit.map(r=>`<span class="chip" style="margin:2px" onclick="openPersona(${jsq(r.nombre)})">${esc(r.nombre)}${(f==='comida'||f==='pack')?' · '+esc(r[f]).slice(0,30):''}</span>`).join('')}</div>`;
+}
+
+/* ---- Turnos ---- */
+const TURNOS=[
+  {dia:'Viernes 23',t:'Comida',  key:'vie',   nota:'La gente llega por la tarde: normalmente 0'},
+  {dia:'Viernes 23',t:'Cena',    key:'vie'},
+  {dia:'Viernes 23',t:'Fiesta',  key:'vie', fiesta:true},
+  {dia:'Sábado 24', t:'Desayuno',key:'sabDes', nota:'Los que han dormido allí el viernes', sinBebida:true},
+  {dia:'Sábado 24', t:'Comida',  key:'sab'},
+  {dia:'Sábado 24', t:'Cena',    key:'sab'},
+  {dia:'Sábado 24', t:'Fiesta',  key:'sab', fiesta:true},
+  {dia:'Domingo 25',t:'Desayuno',key:'domDes', nota:'Los que duermen allí (cama, esterilla o furgo)', sinBebida:true},
+];
+function presentes(key,duda){
+  const R=state.respuestas;
+  if(key==='vie') return R.filter(r=>viernes(r,duda));
+  if(key==='sabDes') return R.filter(r=>viernes(r,duda)&&dormirOf(r)!=='casa');
+  if(key==='sab') return R.filter(()=>true);
+  if(key==='domDes') return R.filter(r=>dormirOf(r)!=='casa');
+  return [];
+}
+function dietaOf(r){ const x=(r.comida||'').trim(); if(!x||/^(no+|nop|ez|nada|nooo|nouu|vamos con todo)$/i.test(x)) return ''; return x; }
+function renderTurnos(){
+  const duda=$('tDuda').value==='si';
+  $('turnosBox').innerHTML=TURNOS.map(t=>{
+    const P=presentes(t.key,duda); const dieta=P.filter(r=>dietaOf(r));
+    const beb={}; P.forEach(r=>{ const b=r.bebida||'?'; beb[b]=(beb[b]||0)+1; });
+    const beben=P.filter(r=>!/otro|nada/i.test(r.bebida||'')).length;
+    const n = (t.key==='vie'&&t.t==='Comida') ? 0 : P.length;
+    const byB={}; P.forEach(r=>{byB[bonoOf(r)]=(byB[bonoOf(r)]||0)+1;});
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><div><span class="small muted" style="text-transform:uppercase;letter-spacing:.08em;font-weight:600">${t.dia}</span><h3 style="margin:2px 0 0">${t.t}</h3></div><div class="v" style="font-size:2.2rem;font-weight:300">${n}</div></div>
+      ${t.nota?`<p class="small muted" style="margin:4px 0 0">${t.nota}</p>`:''}
+      ${n?`<div class="kv"><span>Por bono</span><b>${Object.entries(byB).map(([k,v])=>BONO_LABEL[k]+' '+v).join(' · ')}</b></div>
+      <div class="kv"><span>Dieta especial</span><b>${dieta.length?dieta.map(r=>esc(r.nombre.split(' ')[0])+': '+esc(dietaOf(r))).join(' · '):'ninguna'}</b></div>
+      ${t.sinBebida?'':`<div class="kv"><span>Beben</span><b>${beben} de ${n}</b></div>
+      <div class="kv"><span>Qué beben</span><b>${Object.entries(beb).sort((a,b)=>b[1]-a[1]).map(([k,v])=>esc(k)+' '+v).join(' · ')}</b></div>`}`:''}
+    </div>`; }).join('');
+}
+
+/* ---- Programa / tareas / ajustes / público ---- */
+function programaHtml(){ return PROGRAMA.map(d=>`<div class="card"><h3>${d.dia}</h3><ul class="lineup">${d.items.map(([t,b,c])=>`<li><span class="t">${t}</span><span class="b ${c||''}">${b}</span></li>`).join('')}</ul></div>`).join(''); }
+function renderPrograma(){ $('programaBox').innerHTML=programaHtml(); }
+function renderTareas(){
+  $('checkBox').innerHTML=NO_OLVIDAR.map((t,i)=>`<label class="row" style="cursor:pointer"><input type="checkbox" ${state.checks[i]?'checked':''} onchange="toggleCheck(${i},this.checked)"><span class="grow" style="${state.checks[i]?'text-decoration:line-through;opacity:.5':''}">${t}</span></label>`).join('');
+  $('komandoBox').innerHTML=Object.entries(KOMANDOS).map(([k,v])=>`<div class="card tight"><div style="display:flex;justify-content:space-between"><b>${k}</b><span class="muted small">máx ${eur0(v.max)}${v.nota?' '+v.nota:''}</span></div><div class="small muted">${v.equipo}</div></div>`).join('');
+}
+function toggleCheck(i,on){ write('setCheck',{i,on},()=>{state.checks[i]=on;}); }
+function renderAjustes(){ $('apiUrl').value=settings.api; $('pinSet').value=settings.pin; $('whoSet').value=settings.who; $('vieSet').value=localStorage.getItem(LS('vie_grupos'))||'Dario, Iñigo Losada, Mario'; setStatus(state.demo?'demo':(state.pending.length?'off':'on')); }
+function saveSettings(){ localStorage.setItem(LS('api'),$('apiUrl').value.trim()); localStorage.setItem(LS('pin'),$('pinSet').value.trim().toUpperCase()||'DALE'); localStorage.setItem(LS('who'),$('whoSet').value.trim()); localStorage.setItem(LS('vie_grupos'),$('vieSet').value.trim()); toast('Guardado'); sync(true); }
+function resetLocal(){ if(!confirm('Borra pagos, gastos y habitas guardados en este móvil. ¿Seguro?')) return; ['state','seeded','seeded2'].forEach(k=>localStorage.removeItem(LS(k))); state.pagos=[];state.gastos=[];state.habitas={};state.checks={};state.pending=[]; sync(); }
+const COMUNICADO_ES=[
+ ['Lo primero de todo, ¿cómo están los máquinas?','Otro año que nos liamos la manta a la cabeza: Zubiazpi Rural Fest 2026 está en marcha, esta vez en otoño, por variar, a ver qué tal. 23 - 25 de octubre de 2026.'],
+ ['Dirección','Casa Rural La Roseta – Larruzetagoikoa, 48383, Bizkaia. Los últimos 5 mins de camino son por un camino de cabras, el precio de la privacidad.'],
+ ['Plan','Este año el plato fuerte lo dejamos para el sábado, el viernes de chill (depende de tu ansia), habrá planes fresquitos eso sí.'],
+ ['Viernes','Ir llegando, montar las cosas, preparar un poco el temario, tal… Temas de organizar y eso. Luego ya sí: tomar un par, jam session, torneo de ping pong, una pinchadita chill… Al final se lía, verás.'],
+ ['Sábado','A las 12 Marianito Musikatua con el concierto de funeral de caballo. ¡Ay amaaaaa! Marianito, conciertito, jaleito… ¡Con todo! Comer. Hay que hacer masa. Por la tarde, entre las 18h y las 23h maomeno: Dotz, Silkat, Nuzz y dale kaligula. Después, pinchadas (orden por concretar): Zárraga, Ghost Karma y Puñales.'],
+ ['Dormir','Zubiazpi Crew, las bandas, y los bonos Txarri (si hay hueco), dormimos en cama. Para los demás colchonetas en las habitaciones, o tiendas de campaña en el jardín. El aparcamiento trasero de la casa queda para uso exclusivo de vehículos dormibles. Otro año más, quedáis avisados, aquí no se viene a dormir.'],
+ ['Domingo','Cleaning dead.'],
+ ['Ingeribles','A nuestro cargo tanto comida como alcohol blando, en cantidades industriales. Para comunicarnos si hay que tener algo en cuenta, otra vez, rellena el forms.'],
+ ['Lo de pagar','Bono TXAKUR - 45 €: Marianito musikatua + concis + mañaneo y desayuno domingo. Bono TXARRI - 80 €: viernes amistoso + Bono TXAKUR. Para pagar tremendo BIZUM al +34 685 70 27 60.'],
+ ['Más','Se ruega no compartir esta información con personas ajenas al festival. Este evento no tiene fines lucrativos, nadie saca un duro y nos la jugamos bastante. Se ruega formalidad. ¿Te he dicho ya que rellenes el forms?'],
+];
+const COMUNICADO_EU=[
+ ['Lehenik eta behin, ¿cómo están los máquinas?','Aurtengo Zubiazpi Rural Fest martxan da beste behin, zapatuan eta Urrian, ea zer moduz horrela. 2026ko Urriak 23 - 25.'],
+ ['Helbidea','Casa Rural La Roseta – Larruzetagoikoa, 48383, Bizkaia. Mesedez gogoratu landetxerainoko azkenengo 5 minutuak mendi bide batetik dirautela. Ferraria etxean utzi bazpada.'],
+ ['Plana','Aurtengo egun gogorra, dagoeneko jakingo duzunez, zapatua izango da. Barikua fur the reals, talde selektoaren parte izateko hartu txarri bonoa ; )'],
+ ['Barikua','Ostirala hi napartar! Txiri txiri heldu, dana antolatu, soinu frogak, afaria prestatu... Egia esan, ez dakit zer puntutrarte baretuko garen baina printzipioz plana chill da: ping pong torneitoa, pintxadita, jam session ya holakoak.'],
+ ['Zapatua','Ostiralaren hurrengoa, pai pai. Marianito Musikatua antolatuko da 12ak aldera eguneko lehenengo kontzertuarekin (funeral de caballo). Gero bazkaldu. Bazkaldu denbora aprobetxatu. Arratsaldean 18ak aldera hasi ta amaitu arte, 23tan edo: Dotz, Silkat, Nuzz, dale kaligula. Ostean DJ makinones: Zarraga, Ghost Karma, Puñales.'],
+ ['Lo egin','Zubiazpi Crew, musikariak, ta Txarri bonodunok (lekurik egotekotan), ohean lo egingo dugu. Besteentzat logelatan koltxonetatan edota kanping dendetan usartentzat. Atzeko parkinga ohedun ibilgaliuetarako baino ez da erabiliko.'],
+ ['Domeka','Cleaning dead.'],
+ ['Jantaedan','Janari ta alkola gure kontura, betiko legez. Hori bai, kubatak hartuko bozuz zeuk ekarri. Intolerantziak eta formsen bitartez komunikatu.'],
+ ['Bape dirurik gabe gabiz, txo!','TXAKUR - 45 €: Marianito musikatua + kontzertuak + DJ eta domekako gosaria. TXARRI - 80 €: Bariku de los reals + TXAKUR. Itzelako BIZUM bitartez ordainduko da: +34 685 70 27 60.'],
+ ['Badau o ke','Etorriko ez diren pertsonei hau dana ez dakie inporta, ez zabaldu mesedez. Aurreko urteetan gauan zehar zerbeza bat hartu ta trago bat edan baino ez duten iratxoak topatu dira, ez zaitez iratxo izan. Txintxo ibili. Ondiño formsa bete barik?'],
+];
+function comHtml(c){ return c.map(([h,t])=>`<div style="padding:8px 0;border-bottom:1px solid var(--line)"><div style="font-weight:600;text-transform:uppercase;font-size:.72rem;letter-spacing:.08em;color:var(--ink2)">${h}</div><div style="margin-top:2px">${t}</div></div>`).join(''); }
+function pubLang(l){ $('comEs').classList.toggle('hidden',l!=='es'); $('comEu').classList.toggle('hidden',l!=='eu'); $('lgEs').classList.toggle('on',l==='es'); $('lgEu').classList.toggle('on',l==='eu'); }
+function renderPublico(){ $('pubPrograma').innerHTML=programaHtml(); $('comEs').innerHTML=comHtml(COMUNICADO_ES); $('comEu').innerHTML=comHtml(COMUNICADO_EU); }
+function pubLookup(){
+  const q=$('pubName').value; const out=$('pubResult'); if(norm(q).length<3) return out.innerHTML='';
+  const r=findResp(q); if(!r) return out.innerHTML=`<div class="alert bad">No te encontramos en el forms. <b>Rellena el forms ya pesau.</b></div>`;
+  const e=estadoPago(r), b=bonoOf(r), hab=state.habitas[norm(r.nombre)];
+  const room=hab?ROOMS.find(x=>x.id===hab):null; const mates=hab?Object.entries(state.habitas).filter(([n,h])=>h===hab&&n!==norm(r.nombre)).map(([n])=>{const x=state.respuestas.find(y=>norm(y.nombre)===n);return x?x.nombre:n;}):[];
+  let dormir = hab ? `<b>${room&&room.nombre?room.nombre:'Habita '+hab}</b>${room&&room.zona!=='fuera'?' ('+room.zona+')':''}${mates.length?`<div class="small muted">Con: ${mates.map(esc).join(', ')}</div>`:''}` : (dormirOf(r)==='cama'?'<b>Cama · habita pendiente de asignar</b>':`<b>${esc(r.dormir)}</b>`);
+  out.innerHTML=`<div class="kv"><span>Nombre</span><b>${esc(r.nombre)}</b></div><div class="kv"><span>Bono</span><b>${BONO_LABEL[b]} · ${eur0(debeOf(r))}</b></div><div class="kv"><span>Pago</span><b class="${e.k==='ok'?'pos':e.k==='bad'?'neg':''}">${e.k==='grupo'?'Los grupos no pagan':e.t}</b></div><div class="kv"><span>Duermes</span><span style="text-align:right">${dormir}</span></div>${r.comida&&dietaOf(r)?`<div class="kv"><span>Comida</span><b>${esc(r.comida)}</b></div>`:''}${e.k==='bad'?`<div class="alert">Bizum al <a href="tel:+34685702760">+34 685 70 27 60</a> con tu nombre en el concepto.</div>`:''}`;
+}
+
+/* ---- export ---- */
+function download(name,content,type){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; a.click(); }
+function exportCSV(kind){ const rows=kind==='pagos'?state.pagos:state.gastos.map(g=>({...g,foto:g.foto&&g.foto.startsWith('data:')?'(local)':g.foto})); if(!rows.length) return toast('Nada que exportar'); const cols=Object.keys(rows[0]); download(`zrf_${kind}.csv`, cols.join(';')+'\n'+rows.map(r=>cols.map(c=>'"'+String(r[c]??'').replace(/"/g,'""')+'"').join(';')).join('\n'),'text/csv'); }
+function exportJSON(){ download('zrf_backup.json', JSON.stringify({pagos:state.pagos,gastos:state.gastos.map(g=>({...g,foto:g.foto&&g.foto.startsWith('data:')?'':g.foto})),habitas:state.habitas,checks:state.checks},null,1),'application/json'); }
+
+/* ---- arranque ---- */
+(function init(){
+  const th=localStorage.getItem(LS('theme')); if(th) document.documentElement.dataset.theme=th;
+  document.querySelectorAll('[data-ico]').forEach(i=>i.src=ICONS[i.dataset.ico]); $('logoImg').src=ICONS.flor; $('pinLogo').src=ICONS.casa; $('pubLogo').src=ICONS.flor;
+  loadLocal();
+  if(!state.respuestas.length) state.respuestas=RESPUESTAS_DEMO;
+  const url=new URL(location.href);
+  if(url.searchParams.get('v')==='publico' || (localStorage.getItem(LS('public'))==='1' && url.searchParams.get('v')!=='crew')) setPublic(true);
+  else if(!settings.authed) showPin(); else go('inicio');
+  sync(false);
+  setInterval(()=>{ if(document.visibilityState==='visible' && settings.api) sync(false); }, 60000);
+  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible' && settings.api) sync(false); });
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
