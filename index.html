@@ -229,7 +229,7 @@ details[open] summary::after{transform:rotate(-90deg)}
   <div class="btnrow">
     <button class="btn primary" onclick="openPago()">+ Cobrar</button>
     <button class="btn" onclick="openGasto()">+ Gasto</button>
-    <button class="btn" onclick="go('turnos')">Turnos</button>
+    <button class="btn" onclick="openAlta()">+ Persona</button>
   </div>
   <h3>Últimos movimientos</h3>
   <div class="card tight log" id="homeLog"></div>
@@ -238,7 +238,7 @@ details[open] summary::after{transform:rotate(-90deg)}
 <!-- ===== GENTE ===== -->
 <section class="view" id="v-gente">
   <h2>Gente</h2>
-  <div class="search"><input id="qGente" placeholder="Buscar por nombre…" oninput="renderGente()"><button class="btn sm" onclick="openPago()">+ Cobrar</button></div>
+  <div class="search"><input id="qGente" placeholder="Buscar por nombre…" oninput="renderGente()"><button class="btn sm" onclick="openPago()">+ Cobrar</button><button class="btn sm primary" onclick="openAlta()">+ Persona</button></div>
   <div class="filters" id="fGenteEstado"></div>
   <div class="filters" id="fGenteBono"></div>
   <div class="sum" id="sumGente"></div>
@@ -479,6 +479,26 @@ details[open] summary::after{transform:rotate(-90deg)}
   </div>
 </div>
 
+<!-- ===== SHEET: ALTA MANUAL ===== -->
+<div class="sheet" id="shAlta" onclick="if(event.target===this)closeSheet('shAlta')">
+  <div class="panel">
+    <h2>Apuntar a alguien</h2>
+    <p class="small muted" style="margin:4px 0 0">Crea su fila en el forms como si lo hubiera rellenado. Quedará marcada como "alta manual".</p>
+    <label class="f">Nombre</label><input id="aNombre" placeholder="Nombre y apellido">
+    <div class="grid2">
+      <div><label class="f">Se queda</label><select id="aBono"></select></div>
+      <div><label class="f">Duerme</label><select id="aDormir"></select></div>
+    </div>
+    <div class="grid2">
+      <div><label class="f">Bebe</label><select id="aBebida"></select></div>
+      <div><label class="f">Toca</label><select id="aToca"></select></div>
+    </div>
+    <label class="f">Comida / alergias</label><input id="aComida" placeholder="opcional">
+    <label class="row" style="cursor:pointer;border:none"><input type="checkbox" id="aPagado" checked><span class="grow">Ya ha pagado: registrar el cobro ahora (Bizum, hoy)</span></label>
+    <div class="btnrow"><button class="btn primary" onclick="saveAlta()">Apuntar</button><button class="btn ghost" onclick="closeSheet('shAlta')">Cancelar</button></div>
+  </div>
+</div>
+
 <div class="sheet" id="shPersona" onclick="if(event.target===this)closeSheet('shPersona')"><div class="panel" id="personaPanel"></div></div>
 <div class="sheet" id="shDetalle" onclick="if(event.target===this)closeSheet('shDetalle')"><div class="panel" id="detallePanel"></div></div>
 <div class="sheet" id="shFoto" onclick="closeSheet('shFoto')"><div class="panel" style="text-align:center"><img id="fotoBig" style="max-width:100%;max-height:80vh;border-radius:10px" alt=""></div></div>
@@ -666,7 +686,7 @@ async function api(action, payload){
   if(j.auth===false){ logout(); throw new Error('PIN rechazado'); }
   if(j.error) throw new Error(j.error); return j;
 }
-function localLog(action,payload){ const map={addPago:'pago',updPago:'pago editado',delPago:'pago borrado',addGasto:'gasto',updGasto:'gasto editado',delGasto:'gasto borrado',setHabita:'habita',setPagado:'pagado',setBaja:payload.valor?'baja':'alta',setResp:'editado',setLlegada:payload.on?'llegó':'no llegó'};
+function localLog(action,payload){ const map={addResp:'alta manual',addPago:'pago',updPago:'pago editado',delPago:'pago borrado',addGasto:'gasto',updGasto:'gasto editado',delGasto:'gasto borrado',setHabita:'habita',setPagado:'pagado',setBaja:payload.valor?'baja':'alta',setResp:'editado',setLlegada:payload.on?'llegó':'no llegó'};
   if(!map[action]) return; const det=payload.nombre?payload.nombre+(payload.importe?' · '+eur0(payload.importe):''):payload.concepto?payload.concepto+' · '+eur0(payload.importe):'';
   state.log.unshift({fecha:new Date().toISOString(),who:settings.who,accion:map[action],detalle:det,local:true}); state.log=state.log.slice(0,80); }
 async function write(action, payload, local){
@@ -933,7 +953,7 @@ function openPersona(nombre){
         <div class="btnrow" style="margin-top:4px"><button class="btn sm ghost" onclick="resetPresencia(${jsq(r.nombre)});openPersona(${jsq(r.nombre)})">Volver a lo del forms</button>${esDiaD()?`<button class="btn sm ${llegado(r)?'good':''}" onclick="setLlegada(${jsq(r.nombre)},${!llegado(r)});openPersona(${jsq(r.nombre)})">${llegado(r)?'✓ Ha llegado':'Marcar llegada'}</button>`:''}</div>`;
       if(dormirOf(r)!=='casa'||hab) h+=`<label class="f">Habita</label><select onchange="setHabita(${jsq(nombre)},this.value)"><option value="">— sin asignar —</option>${ROOMS.map(x=>`<option value="${x.id}" ${hab===x.id?'selected':''}>${x.nombre||'Habita '+x.id}</option>`).join('')}</select>`;
     }
-  } else h+=`<div class="alert bad">No está en el forms. ¿Se ha apuntado con otro nombre? Edita el nombre del pago para enlazarlo.</div>`;
+  } else h+=`<div class="alert bad">No está en el forms. ¿Se ha apuntado con otro nombre? Edita el nombre del pago para enlazarlo, o <a href="#" onclick="closeSheet('shPersona');openAlta(${jsq(nombre)});return false">créale la ficha</a>.</div>`;
   h+=`<h3>Pagos</h3>`;
   h+= pagos.length? pagos.map(p=>`<div class="row"><div class="grow"><div class="name">${p.tipo==='devolucion'?'− ':''}${eur(p.importe)} <span class="chip">${esc(p.tipo)}</span></div><div class="meta"><span>${esc(p.metodo)} · ${esc(p.fecha)} ${p.nota?'· '+esc(p.nota):''}${p.who?' · '+esc(p.who):''}</span></div></div><button class="btn sm ghost" onclick="editPago('${p.id}')">Editar</button><button class="btn sm danger" onclick="delPago('${p.id}')">Borrar</button></div>`).join('') : '<p class="muted small">Ninguno.</p>';
   if(r && !esBaja(r) && debeOf(r)>0) h+= flagOf(r)==='si'
@@ -959,6 +979,22 @@ function devolver(nombre){ const r=findResp(nombre); const imp=r?cobradoDe(r):0;
 function setPagado(nombre, si){ const r=findResp(nombre); if(!r) return; write('setPagado',{nombre:r.nombre, ts:r.ts, valor: si?'Sí':'No'},()=>{ r.pagadoFlag = si?'Sí':'No'; }); }
 function setHabita(nombre,hab){ const k=norm(nombre); write('setHabita',{nombre,habita:hab},()=>{ if(hab) state.habitas[k]=hab; else delete state.habitas[k]; }); }
 
+/* ---------- Alta manual (crear fila en el forms) ---------- */
+function openAlta(nombre){
+  const fill=(id,opts)=>$(id).innerHTML=opts.map(([v,l])=>`<option value="${esc(v)}">${l}</option>`).join('');
+  fill('aBono',OPC.bono); fill('aDormir',OPC.dormir); fill('aBebida',OPC.bebida); fill('aToca',OPC.toca);
+  $('aNombre').value=nombre||''; $('aBono').value=OPC.bono[1][0]; $('aDormir').value=OPC.dormir[3][0]; $('aComida').value=''; $('aPagado').checked=true;
+  closeSheet('shPago'); openSheet('shAlta'); if(!nombre) setTimeout(()=>$('aNombre').focus(),50);
+}
+function saveAlta(){
+  const nombre=$('aNombre').value.trim(); if(!nombre) return toast('Falta el nombre');
+  if(state.respuestas.some(r=>norm(r.nombre)===norm(nombre))) return toast('Ya existe alguien con ese nombre');
+  const r={ ts:new Date().toISOString().slice(0,19), nombre, pagadoFlag:'No', viene:'Sí', insta:'', pack:'', toca:$('aToca').value, bono:$('aBono').value, dormir:$('aDormir').value, comida:$('aComida').value.trim(), bebida:$('aBebida').value, haPagado:'', comentarios:'', baja:'', editado:today()+' · alta manual · '+settings.who, precio:'' };
+  const pagar=$('aPagado').checked; closeSheet('shAlta');
+  write('addResp',{nombre:r.nombre,bono:r.bono,dormir:r.dormir,bebida:r.bebida,toca:r.toca,comida:r.comida,pagadoFlag:'No'},()=>{ state.respuestas.push(r); });
+  toast(nombre+' apuntado'); if(pagar && debeOf(r)>0) setTimeout(()=>cobrarRapido(r.nombre),300);
+}
+
 /* ---------- Pago ---------- */
 let editingPagoId=null;
 function openPago(nombre){
@@ -978,7 +1014,7 @@ function savePago(){
   const r=findResp(p.nombre);
   if(p.tipo==='bono' && r && flagOf(r)!=='si' && pagadoBono(r)>=debeOf(r)) setPagado(r.nombre,true);
   if(p.tipo==='devolucion' && r && pagadoBono(r)<=0) setPagado(r.nombre,false);
-  toast(p.tipo==='devolucion'?'Devolución registrada':'Pago guardado'); if(!r) toast(p.nombre+' no está en el forms');
+  toast(p.tipo==='devolucion'?'Devolución registrada':'Pago guardado'); if(!r && p.tipo!=='cami'){ setTimeout(()=>{ if(confirm(p.nombre+' no está en el forms. ¿Le creo la ficha ahora?')) openAlta(p.nombre); },400); }
 }
 function delPago(id){ const p=state.pagos.find(x=>x.id===id); if(!p) return; closeSheet('shPersona'); withUndo(`Pago de ${first(p.nombre)} (${eur0(p.importe)}) borrado`, { local:()=>{ state.pagos=state.pagos.filter(x=>x.id!==id); }, send:()=>send('delPago',{id,nombre:p.nombre}) }); }
 
