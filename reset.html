@@ -1,0 +1,12 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ZRF · actualizar</title>
+<style>body{font-family:system-ui,sans-serif;background:#f4efdc;color:#141414;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;padding:24px}</style></head>
+<body><div><h2>Actualizando la app…</h2><p id="m">Borrando la copia antigua del móvil.</p></div>
+<script>
+(async()=>{
+  try{ if('serviceWorker' in navigator){ const rs=await navigator.serviceWorker.getRegistrations(); for(const r of rs) await r.unregister(); } }catch(e){}
+  try{ if(window.caches){ const ks=await caches.keys(); for(const k of ks) await caches.delete(k); } }catch(e){}
+  try{ localStorage.removeItem('zrf_state'); }catch(e){} // datos cacheados; la URL, el nombre y el PIN se conservan
+  document.getElementById('m').textContent='Listo. Abriendo la versión nueva…';
+  setTimeout(()=>location.replace('index.html?v=crew&r='+Date.now()),800);
+})();
+</script></body></html>
