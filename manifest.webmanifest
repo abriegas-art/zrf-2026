@@ -1,6 +1,6 @@
 {
-  "name": "Zubiazpi Rural Fest 2026",
-  "short_name": "ZRF 2026",
+  "name": "Zubiapp · Zubiazpi Rural Fest 2026",
+  "short_name": "Zubiapp",
   "start_url": "./index.html?v=crew",
   "display": "standalone",
   "background_color": "#f4efdc",
